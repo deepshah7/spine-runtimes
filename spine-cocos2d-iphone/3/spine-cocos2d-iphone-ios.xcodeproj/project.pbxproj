@@ -74,6 +74,7 @@
 		C3FA9B0D1B2B3DE1003467E1 /* goldanic.png in Resources */ = {isa = PBXBuildFile; fileRef = C3FA9B091B2B3DE1003467E1 /* goldanic.png */; };
 		C3FA9B0E1B2B3DE1003467E1 /* goldanic.json in Resources */ = {isa = PBXBuildFile; fileRef = C3FA9B0A1B2B3DE1003467E1 /* goldanic.json */; };
 		D91FC08F4920F6980FB31C5A /* goldanic_n.json in Resources */ = {isa = PBXBuildFile; fileRef = D91FCD74207B24DB5A1DFA49 /* goldanic_n.json */; };
+		D91FC86CE6196B595A2FCA29 /* goldanic_sn.png in Resources */ = {isa = PBXBuildFile; fileRef = D91FC62676DA5055956D4E9C /* goldanic_sn.png */; };
 		D91FCB04D8EA0CEC1B567E4C /* goldanic_n.atlas in Resources */ = {isa = PBXBuildFile; fileRef = D91FCA474317C029468C5F5D /* goldanic_n.atlas */; };
 /* End PBXBuildFile section */
 
@@ -211,6 +212,7 @@
 		C3FA9B081B2B3DE1003467E1 /* goldanic.atlas */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = goldanic.atlas; path = "../../../math-monsters/makkajai-number-muncher/makkajai-ios/Resources/goldanic/goldanic.atlas"; sourceTree = "<group>"; };
 		C3FA9B091B2B3DE1003467E1 /* goldanic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = goldanic.png; path = "../../../math-monsters/makkajai-number-muncher/makkajai-ios/Resources/goldanic/goldanic.png"; sourceTree = "<group>"; };
 		C3FA9B0A1B2B3DE1003467E1 /* goldanic.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = goldanic.json; path = "../../../math-monsters/makkajai-number-muncher/makkajai-ios/Resources/goldanic/goldanic.json"; sourceTree = "<group>"; };
+		D91FC62676DA5055956D4E9C /* goldanic_sn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = goldanic_sn.png; sourceTree = "<group>"; };
 		D91FCA474317C029468C5F5D /* goldanic_n.atlas */ = {isa = PBXFileReference; lastKnownFileType = file.atlas; path = goldanic_n.atlas; sourceTree = "<group>"; };
 		D91FCD74207B24DB5A1DFA49 /* goldanic_n.json */ = {isa = PBXFileReference; lastKnownFileType = file.json; path = goldanic_n.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -343,6 +345,7 @@
 				43C3286B170B0DA6004A9460 /* spineboy.png */,
 				D91FCA474317C029468C5F5D /* goldanic_n.atlas */,
 				D91FCD74207B24DB5A1DFA49 /* goldanic_n.json */,
+				D91FC62676DA5055956D4E9C /* goldanic_sn.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -535,6 +538,7 @@
 				43F701111927FBC700CA4038 /* goblins-mesh.png in Resources */,
 				D91FCB04D8EA0CEC1B567E4C /* goldanic_n.atlas in Resources */,
 				D91FC08F4920F6980FB31C5A /* goldanic_n.json in Resources */,
+				D91FC86CE6196B595A2FCA29 /* goldanic_sn.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
