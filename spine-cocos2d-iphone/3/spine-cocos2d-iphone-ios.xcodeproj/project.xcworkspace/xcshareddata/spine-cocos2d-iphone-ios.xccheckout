@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>08DFCE8E-357E-4CC7-A20F-5382E37AD0D5</string>
+	<key>IDESourceControlProjectName</key>
+	<string>spine-cocos2d-iphone-ios</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>2D892964804FC420554A2636A248A5D6BBA5CC59</key>
+		<string>https://github.com/EsotericSoftware/spine-runtimes.git</string>
+		<key>A87754F85C67A59AE54BFC7D80336AC6DF42A8EE</key>
+		<string>bitbucket.org:makkajai/math-monsters.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>spine-cocos2d-iphone/3/spine-cocos2d-iphone-ios.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>2D892964804FC420554A2636A248A5D6BBA5CC59</key>
+		<string>../../../..</string>
+		<key>A87754F85C67A59AE54BFC7D80336AC6DF42A8EE</key>
+		<string>../../../../../math-monsters</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/EsotericSoftware/spine-runtimes.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>2D892964804FC420554A2636A248A5D6BBA5CC59</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>A87754F85C67A59AE54BFC7D80336AC6DF42A8EE</string>
+			<key>IDESourceControlWCCName</key>
+			<string>math-monsters</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>2D892964804FC420554A2636A248A5D6BBA5CC59</string>
+			<key>IDESourceControlWCCName</key>
+			<string>spine-runtimes</string>
+		</dict>
+	</array>
+</dict>
+</plist>
