@@ -282,7 +282,10 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 }
 
 - (CCTexture*) getTextureForRegion:(spRegionAttachment*)attachment {
-	return (CCTexture*)((spAtlasRegion*)attachment->rendererObject)->page->rendererObject;
+
+    CCTexture *texture = (CCTexture*)((spAtlasRegion*)attachment->rendererObject)->page->rendererObject;
+    [CCSprite spriteWithTexture:texture];
+    return texture;
 }
 
 - (CCTexture*) getTextureForMesh:(spMeshAttachment*)attachment {

@@ -87,5 +87,7 @@
 @property (nonatomic) bool debugSlots;
 @property (nonatomic) bool debugBones;
 @property (nonatomic) spBone* rootBone;
+/// The main texture that will be passed to this node's shader.
+@property(nonatomic, strong) CCTexture *texture;
 
 @end

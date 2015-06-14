@@ -69,6 +69,12 @@
 		9A5D24A7170A94DA0030D4DD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A5D24A6170A94DA0030D4DD /* CoreGraphics.framework */; };
 		9A5D24A9170A94DA0030D4DD /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A5D24A8170A94DA0030D4DD /* GameKit.framework */; };
 		A28E1F0C192926C500D16B23 /* libcocos2d.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A28E1F0B192926A300D16B23 /* libcocos2d.a */; };
+		C3FA9B0B1B2B3DE1003467E1 /* goldanic_n.png in Resources */ = {isa = PBXBuildFile; fileRef = C3FA9B071B2B3DE0003467E1 /* goldanic_n.png */; };
+		C3FA9B0C1B2B3DE1003467E1 /* goldanic.atlas in Resources */ = {isa = PBXBuildFile; fileRef = C3FA9B081B2B3DE1003467E1 /* goldanic.atlas */; };
+		C3FA9B0D1B2B3DE1003467E1 /* goldanic.png in Resources */ = {isa = PBXBuildFile; fileRef = C3FA9B091B2B3DE1003467E1 /* goldanic.png */; };
+		C3FA9B0E1B2B3DE1003467E1 /* goldanic.json in Resources */ = {isa = PBXBuildFile; fileRef = C3FA9B0A1B2B3DE1003467E1 /* goldanic.json */; };
+		D91FC08F4920F6980FB31C5A /* goldanic_n.json in Resources */ = {isa = PBXBuildFile; fileRef = D91FCD74207B24DB5A1DFA49 /* goldanic_n.json */; };
+		D91FCB04D8EA0CEC1B567E4C /* goldanic_n.atlas in Resources */ = {isa = PBXBuildFile; fileRef = D91FCA474317C029468C5F5D /* goldanic_n.atlas */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +84,27 @@
 			proxyType = 2;
 			remoteGlobalIDString = 5018F24D0DFDEAC400C013A5;
 			remoteInfo = cocos2d;
+		};
+		C3FA9B141B2B3DE1003467E1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A28E1F04192926A200D16B23 /* cocos2d-ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2FEB74F194F6C9E00FC0574;
+			remoteInfo = cocos2dAndroid;
+		};
+		C3FA9B161B2B3DE1003467E1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A28E1F04192926A200D16B23 /* cocos2d-ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7A4037A819E37038007B6E8F;
+			remoteInfo = "cocos2d-mac";
+		};
+		C3FA9B181B2B3DE1003467E1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A28E1F04192926A200D16B23 /* cocos2d-ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B7E7DE341A76DB7D004234B7;
+			remoteInfo = cocos2dMacFramework;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -180,6 +207,12 @@
 		9A5D24A6170A94DA0030D4DD /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		9A5D24A8170A94DA0030D4DD /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		A28E1F04192926A200D16B23 /* cocos2d-ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "cocos2d-ios.xcodeproj"; path = "cocos2d/cocos2d-ios.xcodeproj"; sourceTree = SOURCE_ROOT; };
+		C3FA9B071B2B3DE0003467E1 /* goldanic_n.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = goldanic_n.png; path = "../../../math-monsters/makkajai-number-muncher/makkajai-ios/Resources/goldanic/goldanic_n.png"; sourceTree = "<group>"; };
+		C3FA9B081B2B3DE1003467E1 /* goldanic.atlas */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = goldanic.atlas; path = "../../../math-monsters/makkajai-number-muncher/makkajai-ios/Resources/goldanic/goldanic.atlas"; sourceTree = "<group>"; };
+		C3FA9B091B2B3DE1003467E1 /* goldanic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = goldanic.png; path = "../../../math-monsters/makkajai-number-muncher/makkajai-ios/Resources/goldanic/goldanic.png"; sourceTree = "<group>"; };
+		C3FA9B0A1B2B3DE1003467E1 /* goldanic.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = goldanic.json; path = "../../../math-monsters/makkajai-number-muncher/makkajai-ios/Resources/goldanic/goldanic.json"; sourceTree = "<group>"; };
+		D91FCA474317C029468C5F5D /* goldanic_n.atlas */ = {isa = PBXFileReference; lastKnownFileType = file.atlas; path = goldanic_n.atlas; sourceTree = "<group>"; };
+		D91FCD74207B24DB5A1DFA49 /* goldanic_n.json */ = {isa = PBXFileReference; lastKnownFileType = file.json; path = goldanic_n.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -298,12 +331,18 @@
 		43C32867170B0C7F004A9460 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C3FA9B071B2B3DE0003467E1 /* goldanic_n.png */,
+				C3FA9B081B2B3DE1003467E1 /* goldanic.atlas */,
+				C3FA9B091B2B3DE1003467E1 /* goldanic.png */,
+				C3FA9B0A1B2B3DE1003467E1 /* goldanic.json */,
 				43F7010C1927FBC700CA4038 /* goblins-mesh.atlas */,
 				43F7010D1927FBC700CA4038 /* goblins-mesh.json */,
 				43F7010E1927FBC700CA4038 /* goblins-mesh.png */,
 				43C32868170B0DA6004A9460 /* spineboy.json */,
 				43C3286A170B0DA6004A9460 /* spineboy.atlas */,
 				43C3286B170B0DA6004A9460 /* spineboy.png */,
+				D91FCA474317C029468C5F5D /* goldanic_n.atlas */,
+				D91FCD74207B24DB5A1DFA49 /* goldanic_n.json */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -378,6 +417,9 @@
 			isa = PBXGroup;
 			children = (
 				A28E1F0B192926A300D16B23 /* libcocos2d.a */,
+				C3FA9B151B2B3DE1003467E1 /* libcocos2dAndroid.a */,
+				C3FA9B171B2B3DE1003467E1 /* libcocos2d-mac.a */,
+				C3FA9B191B2B3DE1003467E1 /* cocos2dMacFramework.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -442,6 +484,27 @@
 			remoteRef = A28E1F0A192926A300D16B23 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		C3FA9B151B2B3DE1003467E1 /* libcocos2dAndroid.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libcocos2dAndroid.a;
+			remoteRef = C3FA9B141B2B3DE1003467E1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C3FA9B171B2B3DE1003467E1 /* libcocos2d-mac.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libcocos2d-mac.a";
+			remoteRef = C3FA9B161B2B3DE1003467E1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C3FA9B191B2B3DE1003467E1 /* cocos2dMacFramework.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = cocos2dMacFramework.framework;
+			remoteRef = C3FA9B181B2B3DE1003467E1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -449,11 +512,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3FA9B0D1B2B3DE1003467E1 /* goldanic.png in Resources */,
 				43C3286C170B0DA6004A9460 /* spineboy.json in Resources */,
 				43C3286E170B0DA6004A9460 /* spineboy.atlas in Resources */,
 				43C3286F170B0DA6004A9460 /* spineboy.png in Resources */,
 				43C3287D170B0DBE004A9460 /* Default-568h@2x.png in Resources */,
 				43C3287E170B0DBE004A9460 /* Default-Landscape~ipad.png in Resources */,
+				C3FA9B0B1B2B3DE1003467E1 /* goldanic_n.png in Resources */,
+				C3FA9B0E1B2B3DE1003467E1 /* goldanic.json in Resources */,
 				43C3287F170B0DBE004A9460 /* Default.png in Resources */,
 				43C32880170B0DBE004A9460 /* Default@2x.png in Resources */,
 				43C32881170B0DBE004A9460 /* Icon-72.png in Resources */,
@@ -461,11 +527,14 @@
 				43C32883170B0DBE004A9460 /* Icon-Small.png in Resources */,
 				43C32884170B0DBE004A9460 /* Icon-Small@2x.png in Resources */,
 				43C32885170B0DBE004A9460 /* Icon.png in Resources */,
+				C3FA9B0C1B2B3DE1003467E1 /* goldanic.atlas in Resources */,
 				43C32886170B0DBE004A9460 /* Icon@2x.png in Resources */,
 				43C32888170B0DBE004A9460 /* iTunesArtwork in Resources */,
 				43F7010F1927FBC700CA4038 /* goblins-mesh.atlas in Resources */,
 				43F701101927FBC700CA4038 /* goblins-mesh.json in Resources */,
 				43F701111927FBC700CA4038 /* goblins-mesh.png in Resources */,
+				D91FCB04D8EA0CEC1B567E4C /* goldanic_n.atlas in Resources */,
+				D91FC08F4920F6980FB31C5A /* goldanic_n.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
