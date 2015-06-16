@@ -79,7 +79,7 @@
     sprite.position = ccp(500, 200);
     [self addChild:sprite];
 
-	[skeletonNode setAnimationForTrack:0 name:@"idle" loop:YES];
+//	[skeletonNode setAnimationForTrack:0 name:@"idle" loop:YES];
 //	[skeletonNode setAnimationForTrack:1 name:@"antenna_glow" loop:YES];
     CGSize size = [[CCDirector sharedDirector] viewSize];
 
