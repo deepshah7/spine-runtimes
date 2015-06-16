@@ -245,42 +245,39 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 					vertex.color = GLKVector4Make(r, g, b, 1);
 					vertex.texCoord1 = GLKVector2Make(uvs[i * 2], 1 - uvs[i * 2 + 1]);
 					vertex.texCoord2 = GLKVector2Make(uvs[i * 2], 1 - uvs[i * 2 + 1]);
-                    if(i == 0) {
+                    if(i % 4 == 0) {
                         _verts.bl = vertex;
                     }
-                    if(i == 1) {
+                    if(i % 4 == 1) {
                         _verts.br = vertex;
                     }
-                    if(i == 2) {
+                    if(i % 4 == 2) {
                         _verts.tr = vertex;
                     }
-                    if(i == 3) {
+                    if(i % 4 == 3) {
                         _verts.tl = vertex;
                     }
                     if(!self.effect) {
                         CCRenderBufferSetVertex(buffer, i, CCVertexApplyTransform(vertex, transform));
+                    } else if (i % 4 == 3) {
+                        _effectRenderer.contentSize = self.boundingBox.size;
+
+                        CCEffectPrepareResult prepResult = [self.effect prepareForRenderingWithSprite:self];
+                        NSAssert(prepResult.status == CCEffectPrepareSuccess, @"Effect preparation failed.");
+
+                        if (prepResult.changes & CCEffectPrepareUniformsChanged)
+                        {
+                            // Preparing an effect for rendering can modify its uniforms
+                            // dictionary which means we need to reinitialize our copy of the
+                            // uniforms.
+                            [self updateShaderUniformsFromEffect];
+                        }
+                        [_effectRenderer drawSprite:self
+                                         withEffect:self.effect uniforms:self.shaderUniforms
+                                           renderer:renderer
+                                          transform:transform];
                     }
 				}
-
-                if (self.effect)
-                {
-                    _effectRenderer.contentSize = self.boundingBox.size;
-
-                    CCEffectPrepareResult prepResult = [self.effect prepareForRenderingWithSprite:self];
-                    NSAssert(prepResult.status == CCEffectPrepareSuccess, @"Effect preparation failed.");
-
-                    if (prepResult.changes & CCEffectPrepareUniformsChanged)
-                    {
-                        // Preparing an effect for rendering can modify its uniforms
-                        // dictionary which means we need to reinitialize our copy of the
-                        // uniforms.
-                        [self updateShaderUniformsFromEffect];
-                    }
-                    [_effectRenderer drawSprite:self
-                                     withEffect:self.effect uniforms:self.shaderUniforms
-                                       renderer:renderer
-                                      transform:transform];
-                }
 
                 if (!self.effect) {
                     for (int j = 0; j * 3 < trianglesCount; ++j) {

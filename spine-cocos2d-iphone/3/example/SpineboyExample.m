@@ -51,6 +51,7 @@
     NSString *atlasFileName = [NSString stringWithFormat:@"%@.atlas", characterName];
     NSString *mainFileFileName = [NSString stringWithFormat:@"%@.png", characterName];
     NSString *normalFileName = [NSString stringWithFormat:@"%@_n.png", characterName];
+    CGSize size = [[CCDirector sharedDirector] viewSize];
 
 	skeletonNode = [SkeletonAnimation skeletonWithFile:jsonFileName atlasFile:atlasFileName scale:0.6];
 
@@ -60,12 +61,11 @@
 
     sprite.normalMapSpriteFrame = normalMap1;
     sprite.effect = [CCEffectLighting effectWithGroups:@[@"g1"] specularColor:[CCColor whiteColor] shininess:1];
-    sprite.position = ccp(500, 200);
+    sprite.position = ccp(size.width / 2, 200);
     [self addChild:sprite];
 
-	[skeletonNode setAnimationForTrack:0 name:@"idle" loop:YES];
+	[skeletonNode setAnimationForTrack:0 name:@"hand_wave" loop:YES];
 //	[skeletonNode setAnimationForTrack:1 name:@"antenna_glow" loop:YES];
-    CGSize size = [[CCDirector sharedDirector] viewSize];
 
     [self addLights:size];
 
