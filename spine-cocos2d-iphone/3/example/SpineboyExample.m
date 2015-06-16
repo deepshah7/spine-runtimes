@@ -47,8 +47,9 @@
 	if (!self) return nil;
 
 //    skeletonNode = [SkeletonAnimation skeletonWithFile:@"spineboy.json" atlasFile:@"spineboy.atlas" scale:0.6];
-	skeletonNode = [SkeletonAnimation skeletonWithFile:@"goldanic.json" atlasFile:@"goldanic.atlas" scale:0.6];
-	skeletonNode1 = [SkeletonAnimation skeletonWithFile:@"goldanic_n.json" atlasFile:@"goldanic_n.atlas" scale:0.6];
+	skeletonNode = [SkeletonAnimation skeletonWithFile:@"tiktok.json" atlasFile:@"tiktok.atlas" scale:0.6];
+//	skeletonNode = [SkeletonAnimation skeletonWithFile:@"goldanic.json" atlasFile:@"goldanic.atlas" scale:0.6];
+//	skeletonNode1 = [SkeletonAnimation skeletonWithFile:@"goldanic_n.json" atlasFile:@"goldanic_n.atlas" scale:0.6];
 //	[skeletonNode setMixFrom:@"walk" to:@"jump" duration:0.2f];
 //	[skeletonNode setMixFrom:@"jump" to:@"run" duration:0.2f];
 
@@ -71,7 +72,8 @@
 
 //    CCSpriteFrame *normalMap = [CCSpriteFrame frameWithImageNamed:@"goldanic_n.png"];
 //    CCSpriteFrame *normalMap = [CCSpriteFrame frameWithImageNamed:@"goldanic_sn.png"];
-    CCSpriteFrame *normalMap = [CCSpriteFrame frameWithImageNamed:@"goldanic_n.png"];
+    CCSpriteFrame *normalMap = [CCSpriteFrame frameWithImageNamed:@"tiktok_n.png"];
+//    CCSpriteFrame *normalMap = [CCSpriteFrame frameWithImageNamed:@"goldanic_n.png"];
 //    CCSprite *goldanic = [CCSprite spriteWithImageNamed:@"goldanic.png"];
 //    skeletonNode.normalMapSpriteFrame = [normalMap copy];
 //    goldanic.normalMapSpriteFrame = normalMap;
@@ -160,7 +162,7 @@
 //    nodeSprite.anchorPoint = ccp(0, 0);
 //    [effectNode addChild:node];
 //    node.effect = [CCEffectBlur effectWithBlurRadius:3];
-    node.effect = [CCEffectLighting effectWithGroups:@[@"g1"] specularColor:[CCColor whiteColor] shininess:1.0];
+    node.effect = [CCEffectLighting effectWithGroups:@[@"g1"] specularColor:[CCColor whiteColor] shininess:0.4];
 //    effectNode.effect = [CCEffectLighting effectWithGroups:@[@"g1"] specularColor:[CCColor whiteColor] shininess:1.0];
 //    effectNode.visible = YES;
     node.visible = YES;
