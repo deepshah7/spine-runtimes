@@ -141,7 +141,7 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 }
 
 -(void)draw:(CCRenderer *)renderer transform:(const GLKMatrix4 *)transform {
-    [self.normalRenderer draw:renderer transform:transform];
+//    [self.normalRenderer draw:renderer transform:transform];
 	CCColor* nodeColor = self.color;
 	_skeleton->r = nodeColor.red;
 	_skeleton->g = nodeColor.green;
@@ -391,5 +391,16 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
     self.normalRenderer = animation;
     [self.normalRenderer setShader:[CCEffectRenderer sharedCopyShader]];
     [self setShader:[CCEffectRenderer sharedCopyShader]];
+
 }
+
+-(void) setNormalMapSpriteFrame:(CCSpriteFrame*)frame
+{
+
+    // Set the normal map texture in the uniforms dictionary (if the dictionary exists).
+    self.shaderUniforms[CCShaderUniformNormalMapTexture] = (frame.texture ?: [CCTexture none]);
+    _renderState = nil;
+}
+
+
 @end
