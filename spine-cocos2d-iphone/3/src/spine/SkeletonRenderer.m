@@ -35,6 +35,8 @@
 #import "CCNode_Private.h"
 #import "CCDrawNode.h"
 #import "CCEffectRenderer.h"
+#import "CCEffect_Private.h"
+#import "CCSprite_Private.h"
 
 static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 
@@ -142,6 +144,23 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 
 -(void)draw:(CCRenderer *)renderer transform:(const GLKMatrix4 *)transform {
 //    [self.normalRenderer draw:renderer transform:transform];
+    if (self.effect)
+    {
+        _effectRenderer.contentSize = self.contentSizeInPoints;
+
+        CCEffectPrepareResult prepResult = [self.effect prepareForRenderingWithSprite:self];
+        NSAssert(prepResult.status == CCEffectPrepareSuccess, @"Effect preparation failed.");
+
+        if (prepResult.changes & CCEffectPrepareUniformsChanged)
+        {
+            // Preparing an effect for rendering can modify its uniforms
+            // dictionary which means we need to reinitialize our copy of the
+            // uniforms.
+            [self updateShaderUniformsFromEffect];
+        }
+        [_effectRenderer drawSprite:self withEffect:self.effect uniforms:_shaderUniforms renderer:renderer transform:transform];
+    }
+
 	CCColor* nodeColor = self.color;
 	_skeleton->r = nodeColor.red;
 	_skeleton->g = nodeColor.green;
@@ -393,14 +412,5 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
     [self setShader:[CCEffectRenderer sharedCopyShader]];
 
 }
-
--(void) setNormalMapSpriteFrame:(CCSpriteFrame*)frame
-{
-
-    // Set the normal map texture in the uniforms dictionary (if the dictionary exists).
-    self.shaderUniforms[CCShaderUniformNormalMapTexture] = (frame.texture ?: [CCTexture none]);
-    _renderState = nil;
-}
-
 
 @end
