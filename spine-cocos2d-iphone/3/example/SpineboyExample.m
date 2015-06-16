@@ -97,7 +97,7 @@
 
     CCLightNode *lightNode1 = [CCLightNode lightWithType:CCLightPoint groups:@[@"g1"]
                          color:[CCColor whiteColor] intensity:0.8
-                 specularColor:[CCColor redColor] specularIntensity:0.4
+                 specularColor:[CCColor blueColor] specularIntensity:0.4
                   ambientColor:[CCColor whiteColor] ambientIntensity:0.0];
 
     lightNode1.position = ccp(900, size.height/2);
@@ -154,20 +154,20 @@
 //    [node visit];
 //    [renderedNode end];
 
-    CCEffectNode* effectNode = [CCEffectNode effectNodeWithWidth:size.width * 2
-                                                          height:size.height * 2];
+//    CCEffectNode* effectNode = [CCEffectNode effectNodeWithWidth:size.width * 2
+//                                                          height:size.height * 2];
 //    CCSprite* nodeSprite = [CCSprite spriteWithTexture:node.texture];
 //    nodeSprite.anchorPoint = ccp(0, 0);
 //    [effectNode addChild:node];
 //    node.effect = [CCEffectBlur effectWithBlurRadius:3];
     node.effect = [CCEffectLighting effectWithGroups:@[@"g1"] specularColor:[CCColor whiteColor] shininess:1.0];
 //    effectNode.effect = [CCEffectLighting effectWithGroups:@[@"g1"] specularColor:[CCColor whiteColor] shininess:1.0];
-    effectNode.visible = YES;
+//    effectNode.visible = YES;
     node.visible = YES;
 //    node.position = ccp(100, 100);
-    effectNode.contentScale = 5;
-    effectNode.contentSize = CGSizeMake(500, 500);
-    effectNode.position = ccp(0, 0);
+//    effectNode.contentScale = 5;
+//    effectNode.contentSize = CGSizeMake(500, 500);
+//    effectNode.position = ccp(0, 0);
 
 //    CCRenderTexture* renderedEffectNode = [CCRenderTexture renderTextureWithWidth:size.width
 //                                                                           height:size.height];

@@ -262,8 +262,8 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                     if(i == 3) {
                         _verts.tl = vertex;
                     }
+                    CCRenderBufferSetVertex(buffer, i, CCVertexApplyTransform(vertex, transform));
                     if(!self.effect) {
-                        CCRenderBufferSetVertex(buffer, i, CCVertexApplyTransform(vertex, transform));
                     }
 				}
 
@@ -286,9 +286,12 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                                        renderer:renderer
                                       transform:transform];
                 }
-                for (int j = 0; j * 3 < trianglesCount; ++j) {
-					CCRenderBufferSetTriangle(buffer, j, triangles[j * 3], triangles[j * 3 + 1], triangles[j * 3 + 2]);
-				}
+
+                if (!self.effect) {
+                    for (int j = 0; j * 3 < trianglesCount; ++j) {
+                        CCRenderBufferSetTriangle(buffer, j, triangles[j * 3], triangles[j * 3 + 1], triangles[j * 3 + 2]);
+                    }
+                }
 			}
 		}
 	}

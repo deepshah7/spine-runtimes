@@ -74,8 +74,12 @@
 		C3FA9B0D1B2B3DE1003467E1 /* goldanic.png in Resources */ = {isa = PBXBuildFile; fileRef = C3FA9B091B2B3DE1003467E1 /* goldanic.png */; };
 		C3FA9B0E1B2B3DE1003467E1 /* goldanic.json in Resources */ = {isa = PBXBuildFile; fileRef = C3FA9B0A1B2B3DE1003467E1 /* goldanic.json */; };
 		D91FC08F4920F6980FB31C5A /* goldanic_n.json in Resources */ = {isa = PBXBuildFile; fileRef = D91FCD74207B24DB5A1DFA49 /* goldanic_n.json */; };
+		D91FC4C668670EA781BD771E /* tiktok.png in Resources */ = {isa = PBXBuildFile; fileRef = D91FCC034246E60A4B0A0277 /* tiktok.png */; };
 		D91FC86CE6196B595A2FCA29 /* goldanic_sn.png in Resources */ = {isa = PBXBuildFile; fileRef = D91FC62676DA5055956D4E9C /* goldanic_sn.png */; };
+		D91FC9CDCCEE377A74320AC4 /* tiktok.atlas in Resources */ = {isa = PBXBuildFile; fileRef = D91FC8334C06A2C933A8C754 /* tiktok.atlas */; };
+		D91FC9DE746FA6794EF82000 /* tiktok.json in Resources */ = {isa = PBXBuildFile; fileRef = D91FC9393160614D1098AE0E /* tiktok.json */; };
 		D91FCB04D8EA0CEC1B567E4C /* goldanic_n.atlas in Resources */ = {isa = PBXBuildFile; fileRef = D91FCA474317C029468C5F5D /* goldanic_n.atlas */; };
+		D91FCFBB95C351FD73FD4BCF /* tiktok_n.png in Resources */ = {isa = PBXBuildFile; fileRef = D91FC19501DB891F69750EAC /* tiktok_n.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -212,8 +216,12 @@
 		C3FA9B081B2B3DE1003467E1 /* goldanic.atlas */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = goldanic.atlas; path = "../../../math-monsters/makkajai-number-muncher/makkajai-ios/Resources/goldanic/goldanic.atlas"; sourceTree = "<group>"; };
 		C3FA9B091B2B3DE1003467E1 /* goldanic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = goldanic.png; path = "../../../math-monsters/makkajai-number-muncher/makkajai-ios/Resources/goldanic/goldanic.png"; sourceTree = "<group>"; };
 		C3FA9B0A1B2B3DE1003467E1 /* goldanic.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = goldanic.json; path = "../../../math-monsters/makkajai-number-muncher/makkajai-ios/Resources/goldanic/goldanic.json"; sourceTree = "<group>"; };
+		D91FC19501DB891F69750EAC /* tiktok_n.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tiktok_n.png; path = Resources/tiktok_n.png; sourceTree = "<group>"; };
 		D91FC62676DA5055956D4E9C /* goldanic_sn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = goldanic_sn.png; sourceTree = "<group>"; };
+		D91FC8334C06A2C933A8C754 /* tiktok.atlas */ = {isa = PBXFileReference; lastKnownFileType = file.atlas; name = tiktok.atlas; path = Resources/tiktok.atlas; sourceTree = "<group>"; };
+		D91FC9393160614D1098AE0E /* tiktok.json */ = {isa = PBXFileReference; lastKnownFileType = file.json; name = tiktok.json; path = Resources/tiktok.json; sourceTree = "<group>"; };
 		D91FCA474317C029468C5F5D /* goldanic_n.atlas */ = {isa = PBXFileReference; lastKnownFileType = file.atlas; path = goldanic_n.atlas; sourceTree = "<group>"; };
+		D91FCC034246E60A4B0A0277 /* tiktok.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tiktok.png; path = Resources/tiktok.png; sourceTree = "<group>"; };
 		D91FCD74207B24DB5A1DFA49 /* goldanic_n.json */ = {isa = PBXFileReference; lastKnownFileType = file.json; path = goldanic_n.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -346,6 +354,10 @@
 				D91FCA474317C029468C5F5D /* goldanic_n.atlas */,
 				D91FCD74207B24DB5A1DFA49 /* goldanic_n.json */,
 				D91FC62676DA5055956D4E9C /* goldanic_sn.png */,
+				D91FC19501DB891F69750EAC /* tiktok_n.png */,
+				D91FC8334C06A2C933A8C754 /* tiktok.atlas */,
+				D91FC9393160614D1098AE0E /* tiktok.json */,
+				D91FCC034246E60A4B0A0277 /* tiktok.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -539,6 +551,10 @@
 				D91FCB04D8EA0CEC1B567E4C /* goldanic_n.atlas in Resources */,
 				D91FC08F4920F6980FB31C5A /* goldanic_n.json in Resources */,
 				D91FC86CE6196B595A2FCA29 /* goldanic_sn.png in Resources */,
+				D91FCFBB95C351FD73FD4BCF /* tiktok_n.png in Resources */,
+				D91FC9CDCCEE377A74320AC4 /* tiktok.atlas in Resources */,
+				D91FC9DE746FA6794EF82000 /* tiktok.json in Resources */,
+				D91FC4C668670EA781BD771E /* tiktok.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

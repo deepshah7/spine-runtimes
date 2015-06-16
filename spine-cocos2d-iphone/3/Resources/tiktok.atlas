@@ -1,0 +1,132 @@
+
+tiktok.webp
+size: 510,254
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Antenna_GLOW
+  rotate: false
+  xy: 386, 192
+  size: 79, 62
+  orig: 79, 62
+  offset: 0, 0
+  index: -1
+antenna
+  rotate: false
+  xy: 306, 71
+  size: 57, 60
+  orig: 57, 60
+  offset: 0, 0
+  index: -1
+blue_eye
+  rotate: true
+  xy: 386, 130
+  size: 60, 77
+  orig: 60, 77
+  offset: 0, 0
+  index: -1
+blue_eye_glow
+  rotate: false
+  xy: 278, 133
+  size: 106, 121
+  orig: 106, 121
+  offset: 0, 0
+  index: -1
+body
+  rotate: false
+  xy: 2, 34
+  size: 166, 220
+  orig: 166, 220
+  offset: 0, 0
+  index: -1
+hose
+  rotate: false
+  xy: 170, 48
+  size: 72, 82
+  orig: 72, 82
+  offset: 0, 0
+  index: -1
+lt_claw
+  rotate: true
+  xy: 170, 2
+  size: 44, 34
+  orig: 44, 34
+  offset: 0, 0
+  index: -1
+lt_foot
+  rotate: true
+  xy: 365, 77
+  size: 54, 18
+  orig: 54, 18
+  offset: 0, 0
+  index: -1
+lt_leg
+  rotate: true
+  xy: 465, 136
+  size: 24, 42
+  orig: 24, 42
+  offset: 0, 0
+  index: -1
+lt_lower_arm
+  rotate: true
+  xy: 2, 4
+  size: 28, 59
+  orig: 28, 59
+  offset: 0, 0
+  index: -1
+lt_up_arm
+  rotate: false
+  xy: 385, 88
+  size: 22, 40
+  orig: 22, 40
+  offset: 0, 0
+  index: -1
+red_eye
+  rotate: false
+  xy: 244, 54
+  size: 60, 76
+  orig: 60, 76
+  offset: 0, 0
+  index: -1
+red_eye_glow
+  rotate: false
+  xy: 170, 132
+  size: 106, 122
+  orig: 106, 122
+  offset: 0, 0
+  index: -1
+rt_claw
+  rotate: false
+  xy: 467, 188
+  size: 41, 66
+  orig: 41, 66
+  offset: 0, 0
+  index: -1
+rt_foot
+  rotate: false
+  xy: 63, 12
+  size: 51, 20
+  orig: 51, 20
+  offset: 0, 0
+  index: -1
+rt_leg
+  rotate: false
+  xy: 206, 5
+  size: 24, 41
+  orig: 27, 41
+  offset: 0, 0
+  index: -1
+rt_lowerarm
+  rotate: true
+  xy: 465, 162
+  size: 24, 45
+  orig: 24, 45
+  offset: 0, 0
+  index: -1
+rt_up _arm
+  rotate: true
+  xy: 116, 13
+  size: 19, 26
+  orig: 19, 26
+  offset: 0, 0
+  index: -1
