@@ -29,9 +29,7 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-#import <CoreGraphics/CoreGraphics.h>
 #import "SpineboyExample.h"
-#import "GoblinsExample.h"
 
 @implementation SpineboyExample {
     CCLightNode *lightNode;
@@ -48,38 +46,24 @@
 	self = [super init];
 	if (!self) return nil;
 
-//    skeletonNode = [SkeletonAnimation skeletonWithFile:@"spineboy.json" atlasFile:@"spineboy.atlas" scale:0.6];
-//	skeletonNode = [SkeletonAnimation skeletonWithFile:@"tiktok.json" atlasFile:@"tiktok.atlas" scale:0.6];
-	skeletonNode = [SkeletonAnimation skeletonWithFile:@"goldanic.json" atlasFile:@"goldanic.atlas" scale:0.6];
-//	skeletonNode1 = [SkeletonAnimation skeletonWithFile:@"goldanic_n.json" atlasFile:@"goldanic_n.atlas" scale:0.6];
+    NSString *characterName = @"goldanic";
+    NSString *jsonFileName = [NSString stringWithFormat:@"%@.json", characterName];
+    NSString *atlasFileName = [NSString stringWithFormat:@"%@.atlas", characterName];
+    NSString *mainFileFileName = [NSString stringWithFormat:@"%@.png", characterName];
+    NSString *normalFileName = [NSString stringWithFormat:@"%@_n.png", characterName];
 
-    __weak SkeletonAnimation* node = skeletonNode;
-//	skeletonNode.startListener = ^(int trackIndex) {
-//		spTrackEntry* entry = spAnimationState_getCurrent(node.state, trackIndex);
-//		const char* animationName = (entry && entry->animation) ? entry->animation->name : 0;
-//		NSLog(@"%d start: %s", trackIndex, animationName);
-//	};
-//	skeletonNode.endListener = ^(int trackIndex) {
-//		NSLog(@"%d end", trackIndex);
-//	};
-//	skeletonNode.completeListener = ^(int trackIndex, int loopCount) {
-//		NSLog(@"%d complete: %d", trackIndex, loopCount);
-//	};
-//	skeletonNode.eventListener = ^(int trackIndex, spEvent* event) {
-//		NSLog(@"%d event: %s, %d, %f, %s", trackIndex, event->data->name, event->intValue, event->floatValue, event->stringValue);
-//	};
+	skeletonNode = [SkeletonAnimation skeletonWithFile:jsonFileName atlasFile:atlasFileName scale:0.6];
 
-    CCSprite *sprite = [CCSprite spriteWithImageNamed:@"tiktok.png"];
-//    CCSpriteFrame *normalMap = [CCSpriteFrame frameWithImageNamed:@"tiktok_n.png"];
-    CCSpriteFrame *normalMap1 = [CCSpriteFrame frameWithImageNamed:@"tiktok_n.png"];
-    CCSpriteFrame *normalMap = [CCSpriteFrame frameWithImageNamed:@"goldanic_n.png"];
+    CCSprite *sprite = [CCSprite spriteWithImageNamed:mainFileFileName];
+    CCSpriteFrame *normalMap = [CCSpriteFrame frameWithImageNamed:normalFileName];
+    CCSpriteFrame *normalMap1 = [CCSpriteFrame frameWithImageNamed:normalFileName];
 
     sprite.normalMapSpriteFrame = normalMap1;
     sprite.effect = [CCEffectLighting effectWithGroups:@[@"g1"] specularColor:[CCColor whiteColor] shininess:1];
     sprite.position = ccp(500, 200);
     [self addChild:sprite];
 
-//	[skeletonNode setAnimationForTrack:0 name:@"idle" loop:YES];
+	[skeletonNode setAnimationForTrack:0 name:@"idle" loop:YES];
 //	[skeletonNode setAnimationForTrack:1 name:@"antenna_glow" loop:YES];
     CGSize size = [[CCDirector sharedDirector] viewSize];
 

@@ -1,0 +1,76 @@
+
+hypno.png
+size: 1024,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Hypno Rings
+  rotate: false
+  xy: 236, 44
+  size: 209, 210
+  orig: 209, 210
+  offset: 0, 0
+  index: -1
+Inner Magic
+  rotate: false
+  xy: 2, 39
+  size: 232, 215
+  orig: 232, 215
+  offset: 0, 0
+  index: -1
+Mushroom Glow
+  rotate: false
+  xy: 447, 138
+  size: 186, 116
+  orig: 186, 116
+  offset: 0, 0
+  index: -1
+body
+  rotate: false
+  xy: 447, 2
+  size: 142, 134
+  orig: 142, 134
+  offset: 0, 0
+  index: -1
+closed_eye
+  rotate: true
+  xy: 591, 61
+  size: 75, 49
+  orig: 75, 49
+  offset: 0, 0
+  index: -1
+hlf_closed_eye
+  rotate: false
+  xy: 912, 204
+  size: 75, 50
+  orig: 75, 50
+  offset: 0, 0
+  index: -1
+lt_tentacle
+  rotate: false
+  xy: 799, 188
+  size: 111, 66
+  orig: 111, 66
+  offset: 0, 0
+  index: -1
+mushroom
+  rotate: false
+  xy: 635, 168
+  size: 162, 86
+  orig: 162, 86
+  offset: 0, 0
+  index: -1
+open_eye
+  rotate: false
+  xy: 642, 116
+  size: 72, 50
+  orig: 72, 50
+  offset: 0, 0
+  index: -1
+red_round
+  rotate: false
+  xy: 591, 2
+  size: 57, 57
+  orig: 57, 57
+  offset: 0, 0
+  index: -1

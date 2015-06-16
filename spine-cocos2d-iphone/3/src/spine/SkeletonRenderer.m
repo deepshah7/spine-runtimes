@@ -30,16 +30,10 @@
  *****************************************************************************/
 
 #import <spine/SkeletonRenderer.h>
-#import <spine/spine-cocos2d-iphone.h>
 #import <spine/extension.h>
-#import "CCNode_Private.h"
-#import "CCDrawNode.h"
-#import "CCEffectRenderer.h"
 #import "CCEffect_Private.h"
 #import "CCSprite_Private.h"
-#import "CCEffectRenderer.h"
 
-@class CCEffectRenderTarget;
 static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 
 @interface SkeletonRenderer (Private)
@@ -283,7 +277,7 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                         [self updateShaderUniformsFromEffect];
                     }
                     [_effectRenderer drawSprite:self
-                                     withEffect:self.effect uniforms:_shaderUniforms
+                                     withEffect:self.effect uniforms:self.shaderUniforms
                                        renderer:renderer
                                       transform:transform];
                 }
