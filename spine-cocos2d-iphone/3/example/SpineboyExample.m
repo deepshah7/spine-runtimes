@@ -49,30 +49,38 @@
 	if (!self) return nil;
 
 //    skeletonNode = [SkeletonAnimation skeletonWithFile:@"spineboy.json" atlasFile:@"spineboy.atlas" scale:0.6];
-	skeletonNode = [SkeletonAnimation skeletonWithFile:@"tiktok.json" atlasFile:@"tiktok.atlas" scale:0.6];
-//	skeletonNode = [SkeletonAnimation skeletonWithFile:@"goldanic.json" atlasFile:@"goldanic.atlas" scale:0.6];
+//	skeletonNode = [SkeletonAnimation skeletonWithFile:@"tiktok.json" atlasFile:@"tiktok.atlas" scale:0.6];
+	skeletonNode = [SkeletonAnimation skeletonWithFile:@"goldanic.json" atlasFile:@"goldanic.atlas" scale:0.6];
 //	skeletonNode1 = [SkeletonAnimation skeletonWithFile:@"goldanic_n.json" atlasFile:@"goldanic_n.atlas" scale:0.6];
 
     __weak SkeletonAnimation* node = skeletonNode;
-	skeletonNode.startListener = ^(int trackIndex) {
-		spTrackEntry* entry = spAnimationState_getCurrent(node.state, trackIndex);
-		const char* animationName = (entry && entry->animation) ? entry->animation->name : 0;
-		NSLog(@"%d start: %s", trackIndex, animationName);
-	};
-	skeletonNode.endListener = ^(int trackIndex) {
-		NSLog(@"%d end", trackIndex);
-	};
-	skeletonNode.completeListener = ^(int trackIndex, int loopCount) {
-		NSLog(@"%d complete: %d", trackIndex, loopCount);
-	};
-	skeletonNode.eventListener = ^(int trackIndex, spEvent* event) {
-		NSLog(@"%d event: %s, %d, %f, %s", trackIndex, event->data->name, event->intValue, event->floatValue, event->stringValue);
-	};
+//	skeletonNode.startListener = ^(int trackIndex) {
+//		spTrackEntry* entry = spAnimationState_getCurrent(node.state, trackIndex);
+//		const char* animationName = (entry && entry->animation) ? entry->animation->name : 0;
+//		NSLog(@"%d start: %s", trackIndex, animationName);
+//	};
+//	skeletonNode.endListener = ^(int trackIndex) {
+//		NSLog(@"%d end", trackIndex);
+//	};
+//	skeletonNode.completeListener = ^(int trackIndex, int loopCount) {
+//		NSLog(@"%d complete: %d", trackIndex, loopCount);
+//	};
+//	skeletonNode.eventListener = ^(int trackIndex, spEvent* event) {
+//		NSLog(@"%d event: %s, %d, %f, %s", trackIndex, event->data->name, event->intValue, event->floatValue, event->stringValue);
+//	};
 
-    CCSpriteFrame *normalMap = [CCSpriteFrame frameWithImageNamed:@"tiktok_n.png"];
-//    CCSpriteFrame *normalMap = [CCSpriteFrame frameWithImageNamed:@"goldanic_n.png"];
+    CCSprite *sprite = [CCSprite spriteWithImageNamed:@"tiktok.png"];
+//    CCSpriteFrame *normalMap = [CCSpriteFrame frameWithImageNamed:@"tiktok_n.png"];
+    CCSpriteFrame *normalMap1 = [CCSpriteFrame frameWithImageNamed:@"tiktok_n.png"];
+    CCSpriteFrame *normalMap = [CCSpriteFrame frameWithImageNamed:@"goldanic_n.png"];
+
+    sprite.normalMapSpriteFrame = normalMap1;
+    sprite.effect = [CCEffectLighting effectWithGroups:@[@"g1"] specularColor:[CCColor whiteColor] shininess:1];
+    sprite.position = ccp(500, 200);
+    [self addChild:sprite];
 
 	[skeletonNode setAnimationForTrack:0 name:@"idle" loop:YES];
+//	[skeletonNode setAnimationForTrack:1 name:@"antenna_glow" loop:YES];
     CGSize size = [[CCDirector sharedDirector] viewSize];
 
     [self addLights:size];
@@ -108,7 +116,7 @@
 
     lightNode1 = [CCLightNode lightWithType:CCLightPoint groups:@[@"g1"]
                          color:[CCColor whiteColor] intensity:0.8
-                 specularColor:[CCColor blueColor] specularIntensity:0.4
+                 specularColor:[CCColor yellowColor] specularIntensity:0.4
                   ambientColor:[CCColor whiteColor] ambientIntensity:0.0];
 
     lightNode1.position = ccp(size.width - 10, size.height/2);

@@ -144,8 +144,6 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 }
 
 -(void)draw:(CCRenderer *)renderer transform:(const GLKMatrix4 *)transform {
-//    [self.normalRenderer draw:renderer transform:transform];
-
 	CCColor* nodeColor = self.color;
 	_skeleton->r = nodeColor.red;
 	_skeleton->g = nodeColor.green;
@@ -239,6 +237,10 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 			CGSize size = texture.contentSize;
 			GLKVector2 center = GLKVector2Make(size.width / 2.0, size.height / 2.0);
 			GLKVector2 extents = GLKVector2Make(size.width / 2.0, size.height / 2.0);
+            NSString *string = [NSString stringWithUTF8String:slot->data->name];
+            if([string isEqualToString:@"body"]) {
+                NSLog(@"DoSomething");
+            }
 			if (CCRenderCheckVisbility(transform, center, extents)) {
 				CCRenderBuffer buffer =
                         [renderer enqueueTriangles:(trianglesCount / 3) andVertexes:verticesCount
@@ -261,14 +263,14 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                     if(i == 3) {
                         _verts.tl = vertex;
                     }
-                    CCRenderBufferSetVertex(buffer, i, CCVertexApplyTransform(vertex, transform));
                     if(!self.effect) {
+                        CCRenderBufferSetVertex(buffer, i, CCVertexApplyTransform(vertex, transform));
                     }
 				}
 
                 if (self.effect)
                 {
-                    _effectRenderer.contentSize = self.contentSizeInPoints;
+                    _effectRenderer.contentSize = self.boundingBox.size;
 
                     CCEffectPrepareResult prepResult = [self.effect prepareForRenderingWithSprite:self];
                     NSAssert(prepResult.status == CCEffectPrepareSuccess, @"Effect preparation failed.");
@@ -286,11 +288,11 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                                       transform:transform];
                 }
 
-//                if (!self.effect) {
+                if (!self.effect) {
                     for (int j = 0; j * 3 < trianglesCount; ++j) {
                         CCRenderBufferSetTriangle(buffer, j, triangles[j * 3], triangles[j * 3 + 1], triangles[j * 3 + 2]);
                     }
-//                }
+                }
 			}
 		}
 	}
