@@ -34,7 +34,6 @@
 
 @interface SpineboyExample : CCNode {
 	SkeletonAnimation* skeletonNode;
-	SkeletonAnimation* skeletonNode1;
 }
 
 + (CCScene*) scene;

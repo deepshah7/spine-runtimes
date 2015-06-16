@@ -90,8 +90,4 @@
 /// The main texture that will be passed to this node's shader.
 @property(nonatomic, strong) CCTexture *texture;
 
-@property(nonatomic, retain) SkeletonRenderer *normalRenderer;
-
-- (void)addNormalSkeleton:(SkeletonRenderer *)animation;
-
 @end

@@ -29,11 +29,13 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
+#import <CoreGraphics/CoreGraphics.h>
 #import "SpineboyExample.h"
 #import "GoblinsExample.h"
 
 @implementation SpineboyExample {
     CCLightNode *lightNode;
+    CCLightNode *lightNode1;
 }
 
 + (CCScene*) scene {
@@ -50,8 +52,6 @@
 	skeletonNode = [SkeletonAnimation skeletonWithFile:@"tiktok.json" atlasFile:@"tiktok.atlas" scale:0.6];
 //	skeletonNode = [SkeletonAnimation skeletonWithFile:@"goldanic.json" atlasFile:@"goldanic.atlas" scale:0.6];
 //	skeletonNode1 = [SkeletonAnimation skeletonWithFile:@"goldanic_n.json" atlasFile:@"goldanic_n.atlas" scale:0.6];
-//	[skeletonNode setMixFrom:@"walk" to:@"jump" duration:0.2f];
-//	[skeletonNode setMixFrom:@"jump" to:@"run" duration:0.2f];
 
     __weak SkeletonAnimation* node = skeletonNode;
 	skeletonNode.startListener = ^(int trackIndex) {
@@ -68,28 +68,37 @@
 	skeletonNode.eventListener = ^(int trackIndex, spEvent* event) {
 		NSLog(@"%d event: %s, %d, %f, %s", trackIndex, event->data->name, event->intValue, event->floatValue, event->stringValue);
 	};
-//    skeletonNode.effect = [CCEffectLighting effectWithGroups:@[@"g1"] specularColor:[CCColor whiteColor] shininess:1.0];
 
-//    CCSpriteFrame *normalMap = [CCSpriteFrame frameWithImageNamed:@"goldanic_n.png"];
-//    CCSpriteFrame *normalMap = [CCSpriteFrame frameWithImageNamed:@"goldanic_sn.png"];
     CCSpriteFrame *normalMap = [CCSpriteFrame frameWithImageNamed:@"tiktok_n.png"];
 //    CCSpriteFrame *normalMap = [CCSpriteFrame frameWithImageNamed:@"goldanic_n.png"];
-//    CCSprite *goldanic = [CCSprite spriteWithImageNamed:@"goldanic.png"];
-//    skeletonNode.normalMapSpriteFrame = [normalMap copy];
-//    goldanic.normalMapSpriteFrame = normalMap;
-//    [goldanic setPosition:ccp(500, 350)];
-//    goldanic.effect = [CCEffectLighting effectWithGroups:@[@"g1"] specularColor:[CCColor whiteColor] shininess:1.0];
-//    goldanic.name = @"goldanic";
-//    [self addChild:goldanic z:10];
+
 	[skeletonNode setAnimationForTrack:0 name:@"idle" loop:YES];
-//	[skeletonNode1 setAnimationForTrack:0 name:@"idle" loop:YES];
     CGSize size = [[CCDirector sharedDirector] viewSize];
+
+    [self addLights:size];
+
+    skeletonNode.normalMapSpriteFrame = normalMap;
+
+	[skeletonNode setPosition:ccp(size.width / 2, size.height / 2)];
+    [skeletonNode updateWorldTransform];
+
+    skeletonNode.effect = [CCEffectLighting effectWithGroups:@[@"g1"] specularColor:[CCColor whiteColor] shininess:1];
+    skeletonNode.visible = YES;
+    [self addChild:skeletonNode];
+
+    self.userInteractionEnabled = YES;
+    self.contentSize = size;
+
+	return self;
+}
+
+- (void)addLights:(CGSize)size {
     lightNode = [CCLightNode lightWithType:CCLightPoint groups:@[@"g1"]
                          color:[CCColor whiteColor] intensity:0.8
                  specularColor:[CCColor greenColor] specularIntensity:0.4
                   ambientColor:[CCColor whiteColor] ambientIntensity:0.0];
 
-    lightNode.position = ccp(100, size.height/2);
+    lightNode.position = ccp(10, size.height/2);
     lightNode.visible = YES;
     lightNode.depth = 200;
     lightNode.halfRadius = 0.5;
@@ -97,126 +106,34 @@
     lightNode.name = @"light";
     [self addChild:lightNode z:200];
 
-    CCLightNode *lightNode1 = [CCLightNode lightWithType:CCLightPoint groups:@[@"g1"]
+    lightNode1 = [CCLightNode lightWithType:CCLightPoint groups:@[@"g1"]
                          color:[CCColor whiteColor] intensity:0.8
                  specularColor:[CCColor blueColor] specularIntensity:0.4
                   ambientColor:[CCColor whiteColor] ambientIntensity:0.0];
 
-    lightNode1.position = ccp(900, size.height/2);
+    lightNode1.position = ccp(size.width - 10, size.height/2);
     lightNode1.visible = YES;
     lightNode1.depth = 200;
     lightNode1.halfRadius = 0.5;
     lightNode1.scale = 1;
     lightNode1.name = @"light1";
     [self addChild:lightNode1 z:200];
-
-//	[skeletonNode runAction:[CCEffectLighting ]]
-//	spTrackEntry* jumpEntry = [skeletonNode addAnimationForTrack:0 name:@"jump" loop:NO afterDelay:3];
-//	[skeletonNode addAnimationForTrack:0 name:@"run" loop:YES afterDelay:0];
-//
-//	[skeletonNode setListenerForEntry:jumpEntry onStart:^(int trackIndex) {
-//		CCLOG(@"jumped!");
-//	}];
-
-	// [skeletonNode setAnimationForTrack:1 name:@"test" loop:YES];
-
-	CGSize windowSize = size;
-//    skeletonNode.debugBones = YES;
-//    skeletonNode.debugSlots = YES;
-    skeletonNode.normalMapSpriteFrame = normalMap;
-
-	[skeletonNode setPosition:ccp(windowSize.width / 2, windowSize.height / 2)];
-	[skeletonNode1 setPosition:ccp(windowSize.width / 2, windowSize.height / 2)];
-    [skeletonNode updateWorldTransform];
-    [skeletonNode1 updateWorldTransform];
-//    [self addChild:skeletonNode];
-//    [self addChild:skeletonNode1];
-    [skeletonNode addNormalSkeleton: skeletonNode1];
-    [self createBackgroundTexture:skeletonNode];
-//    [goldanic addChild:skeletonNode z:10];
-//    [goldanic addChild:skeletonNode1 z:9];
-
-
-	self.userInteractionEnabled = YES;
-    self.contentSize = windowSize;
-
-	return self;
 }
 
 - (void)onEnter {
     [super onEnter];
 }
 
-- (void) createBackgroundTexture:(SkeletonAnimation*)node
-{
-    CGSize size = node.boundingBox.size;
-//    CCRenderTexture* renderedNode = [CCRenderTexture renderTextureWithWidth:size.width
-//                                                                     height:size.height];
-//    [renderedNode beginWithClear:0 g:0 b:0 a:1];
-//    [node visit];
-//    [renderedNode end];
-
-//    CCEffectNode* effectNode = [CCEffectNode effectNodeWithWidth:size.width * 2
-//                                                          height:size.height * 2];
-//    CCSprite* nodeSprite = [CCSprite spriteWithTexture:node.texture];
-//    nodeSprite.anchorPoint = ccp(0, 0);
-//    [effectNode addChild:node];
-//    node.effect = [CCEffectBlur effectWithBlurRadius:3];
-    node.effect = [CCEffectLighting effectWithGroups:@[@"g1"] specularColor:[CCColor whiteColor] shininess:0.4];
-//    effectNode.effect = [CCEffectLighting effectWithGroups:@[@"g1"] specularColor:[CCColor whiteColor] shininess:1.0];
-//    effectNode.visible = YES;
-    node.visible = YES;
-//    node.position = ccp(100, 100);
-//    effectNode.contentScale = 5;
-//    effectNode.contentSize = CGSizeMake(500, 500);
-//    effectNode.position = ccp(0, 0);
-
-//    CCRenderTexture* renderedEffectNode = [CCRenderTexture renderTextureWithWidth:size.width
-//                                                                           height:size.height];
-//    [renderedEffectNode beginWithClear:0 g:0 b:0 a:1];
-//    [effectNode visit];
-//    [renderedEffectNode end];
-
-//    CCSprite* background = [CCSprite spriteWithTexture:renderedEffectNode.texture];
-//    background.position = ccp(500,100);
-//    [self addChild:effectNode z: 20];
-    [self addChild:node];
-}
-
-- (void)update:(CCTime)delta {
-//    [super update:delta];
-//    CCNode *node = [self getChildByName:@"light" recursively:NO];
-//    node.position = ccp(node.position.x+10, node.position.y);
-//    CCNode *node1 = [self getChildByName:@"light1" recursively:NO];
-//    node1.position = ccp(node1.position.x, node1.position.y + 10);
-//    if(node.position.x > 1024 || node.position.y > 768) {
-//        node.position = ccp(0,0);
-//    }
-//    if(node1.position.x > 1024 || node1.position.y > 768) {
-//        node1.position = ccp(0,0);
-//    }
-}
-
 - (void)touchBegan:(CCTouch *)touch withEvent:(CCTouchEvent *)event {
     CGPoint touchLocation = [touch locationInView:[touch view]];
-    lightNode.position = ccp(touchLocation.x, [[CCDirector sharedDirector] viewSize].height - touchLocation.y);
+    lightNode.position = ccp([[CCDirector sharedDirector] viewSize].width - touchLocation.x, [[CCDirector sharedDirector] viewSize].height - touchLocation.y);
+    lightNode1.position = ccp(touchLocation.x, touchLocation.y);
 }
 
 -(void)touchMoved:(CCTouch *)touch withEvent:(CCTouchEvent*)event {
     CGPoint touchLocation = [touch locationInView:[touch view]];
-    lightNode.position = ccp(touchLocation.x, [[CCDirector sharedDirector] viewSize].height - touchLocation.y);
+    lightNode.position = ccp([[CCDirector sharedDirector] viewSize].width - touchLocation.x, [[CCDirector sharedDirector] viewSize].height - touchLocation.y);
+    lightNode1.position = ccp(touchLocation.x, touchLocation.y);
 }
-
-//
-//#if ( TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR )
-//- (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
-//	if (!skeletonNode.debugBones)
-//		skeletonNode.debugBones = true;
-//	else if (skeletonNode.timeScale == 1)
-//		skeletonNode.timeScale = 0.3f;
-//	else
-//		[[CCDirector sharedDirector] replaceScene:[GoblinsExample scene]];
-//}
-//#endif
 
 @end

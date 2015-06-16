@@ -140,7 +140,6 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 	if (_atlas) spAtlas_dispose(_atlas);
 	spSkeleton_dispose(_skeleton);
 	FREE(_worldVertices);
-    [_normalRenderer release];
     [super dealloc];
 }
 
@@ -287,11 +286,11 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                                       transform:transform];
                 }
 
-                if (!self.effect) {
+//                if (!self.effect) {
                     for (int j = 0; j * 3 < trianglesCount; ++j) {
                         CCRenderBufferSetTriangle(buffer, j, triangles[j * 3], triangles[j * 3 + 1], triangles[j * 3 + 2]);
                     }
-                }
+//                }
 			}
 		}
 	}
@@ -429,13 +428,6 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 
 - (BOOL) doesOpacityModifyRGB {
 	return _premultipliedAlpha;
-}
-
-- (void)addNormalSkeleton:(SkeletonRenderer *)animation {
-    self.normalRenderer = animation;
-    [self.normalRenderer setShader:[CCEffectRenderer sharedCopyShader]];
-    [self setShader:[CCEffectRenderer sharedCopyShader]];
-
 }
 
 @end
