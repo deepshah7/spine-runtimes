@@ -37,7 +37,9 @@
 #import "CCEffectRenderer.h"
 #import "CCEffect_Private.h"
 #import "CCSprite_Private.h"
+#import "CCEffectRenderer.h"
 
+@class CCEffectRenderTarget;
 static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 
 @interface SkeletonRenderer (Private)
@@ -144,22 +146,6 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 
 -(void)draw:(CCRenderer *)renderer transform:(const GLKMatrix4 *)transform {
 //    [self.normalRenderer draw:renderer transform:transform];
-    if (self.effect)
-    {
-        _effectRenderer.contentSize = self.contentSizeInPoints;
-
-        CCEffectPrepareResult prepResult = [self.effect prepareForRenderingWithSprite:self];
-        NSAssert(prepResult.status == CCEffectPrepareSuccess, @"Effect preparation failed.");
-
-        if (prepResult.changes & CCEffectPrepareUniformsChanged)
-        {
-            // Preparing an effect for rendering can modify its uniforms
-            // dictionary which means we need to reinitialize our copy of the
-            // uniforms.
-            [self updateShaderUniformsFromEffect];
-        }
-        [_effectRenderer drawSprite:self withEffect:self.effect uniforms:_shaderUniforms renderer:renderer transform:transform];
-    }
 
 	CCColor* nodeColor = self.color;
 	_skeleton->r = nodeColor.red;
@@ -255,16 +241,52 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 			GLKVector2 center = GLKVector2Make(size.width / 2.0, size.height / 2.0);
 			GLKVector2 extents = GLKVector2Make(size.width / 2.0, size.height / 2.0);
 			if (CCRenderCheckVisbility(transform, center, extents)) {
-				CCRenderBuffer buffer = [renderer enqueueTriangles:(trianglesCount / 3) andVertexes:verticesCount
+				CCRenderBuffer buffer =
+                        [renderer enqueueTriangles:(trianglesCount / 3) andVertexes:verticesCount
                                                          withState:self.renderState globalSortOrder:0];
 				for (int i = 0; i * 2 < verticesCount; ++i) {
 					CCVertex vertex;
 					vertex.position = GLKVector4Make(_worldVertices[i * 2], _worldVertices[i * 2 + 1], 0.0, 1.0);
-					vertex.color = GLKVector4Make(r, g, b, a);
+					vertex.color = GLKVector4Make(r, g, b, 1);
 					vertex.texCoord1 = GLKVector2Make(uvs[i * 2], 1 - uvs[i * 2 + 1]);
-					CCRenderBufferSetVertex(buffer, i, CCVertexApplyTransform(vertex, transform));
+					vertex.texCoord2 = GLKVector2Make(uvs[i * 2], 1 - uvs[i * 2 + 1]);
+                    if(i == 0) {
+                        _verts.bl = vertex;
+                    }
+                    if(i == 1) {
+                        _verts.br = vertex;
+                    }
+                    if(i == 2) {
+                        _verts.tr = vertex;
+                    }
+                    if(i == 3) {
+                        _verts.tl = vertex;
+                    }
+                    if(!self.effect) {
+                        CCRenderBufferSetVertex(buffer, i, CCVertexApplyTransform(vertex, transform));
+                    }
 				}
-				for (int j = 0; j * 3 < trianglesCount; ++j) {
+
+                if (self.effect)
+                {
+                    _effectRenderer.contentSize = self.contentSizeInPoints;
+
+                    CCEffectPrepareResult prepResult = [self.effect prepareForRenderingWithSprite:self];
+                    NSAssert(prepResult.status == CCEffectPrepareSuccess, @"Effect preparation failed.");
+
+                    if (prepResult.changes & CCEffectPrepareUniformsChanged)
+                    {
+                        // Preparing an effect for rendering can modify its uniforms
+                        // dictionary which means we need to reinitialize our copy of the
+                        // uniforms.
+                        [self updateShaderUniformsFromEffect];
+                    }
+                    [_effectRenderer drawSprite:self
+                                     withEffect:self.effect uniforms:_shaderUniforms
+                                       renderer:renderer
+                                      transform:transform];
+                }
+                for (int j = 0; j * 3 < trianglesCount; ++j) {
 					CCRenderBufferSetTriangle(buffer, j, triangles[j * 3], triangles[j * 3 + 1], triangles[j * 3 + 2]);
 				}
 			}
