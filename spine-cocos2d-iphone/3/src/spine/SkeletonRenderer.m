@@ -34,6 +34,7 @@
 #import <spine/extension.h>
 #import "CCNode_Private.h"
 #import "CCDrawNode.h"
+#import "CCEffectRenderer.h"
 
 static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 
@@ -135,10 +136,12 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 	if (_atlas) spAtlas_dispose(_atlas);
 	spSkeleton_dispose(_skeleton);
 	FREE(_worldVertices);
-	[super dealloc];
+    [_normalRenderer release];
+    [super dealloc];
 }
 
 -(void)draw:(CCRenderer *)renderer transform:(const GLKMatrix4 *)transform {
+    [self.normalRenderer draw:renderer transform:transform];
 	CCColor* nodeColor = self.color;
 	_skeleton->r = nodeColor.red;
 	_skeleton->g = nodeColor.green;
@@ -233,7 +236,8 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 			GLKVector2 center = GLKVector2Make(size.width / 2.0, size.height / 2.0);
 			GLKVector2 extents = GLKVector2Make(size.width / 2.0, size.height / 2.0);
 			if (CCRenderCheckVisbility(transform, center, extents)) {
-				CCRenderBuffer buffer = [renderer enqueueTriangles:(trianglesCount / 3) andVertexes:verticesCount withState:self.renderState globalSortOrder:0];
+				CCRenderBuffer buffer = [renderer enqueueTriangles:(trianglesCount / 3) andVertexes:verticesCount
+                                                         withState:self.renderState globalSortOrder:0];
 				for (int i = 0; i * 2 < verticesCount; ++i) {
 					CCVertex vertex;
 					vertex.position = GLKVector4Make(_worldVertices[i * 2], _worldVertices[i * 2 + 1], 0.0, 1.0);
@@ -283,9 +287,7 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 
 - (CCTexture*) getTextureForRegion:(spRegionAttachment*)attachment {
 
-    CCTexture *texture = (CCTexture*)((spAtlasRegion*)attachment->rendererObject)->page->rendererObject;
-    [CCSprite spriteWithTexture:texture];
-    return texture;
+    return (CCTexture*)((spAtlasRegion*)attachment->rendererObject)->page->rendererObject;
 }
 
 - (CCTexture*) getTextureForMesh:(spMeshAttachment*)attachment {
@@ -385,4 +387,9 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 	return _premultipliedAlpha;
 }
 
+- (void)addNormalSkeleton:(SkeletonRenderer *)animation {
+    self.normalRenderer = animation;
+    [self.normalRenderer setShader:[CCEffectRenderer sharedCopyShader]];
+    [self setShader:[CCEffectRenderer sharedCopyShader]];
+}
 @end

@@ -79,6 +79,7 @@ typedef void(^spEventListener)(int trackIndex, spEvent* event);
 - (void) onTrackEntryEvent:(int)trackIndex type:(spEventType)type event:(spEvent*)event loopCount:(int)loopCount;
 
 @property (nonatomic, readonly) spAnimationState* state;
+
 @property (nonatomic) float timeScale;
 @property (nonatomic, copy) spStartListener startListener;
 @property (nonatomic, copy) spEndListener endListener;

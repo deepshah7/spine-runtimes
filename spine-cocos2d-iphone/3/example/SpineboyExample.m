@@ -69,15 +69,15 @@
 
 //    CCSpriteFrame *normalMap = [CCSpriteFrame frameWithImageNamed:@"goldanic_n.png"];
     CCSpriteFrame *normalMap = [CCSpriteFrame frameWithImageNamed:@"goldanic_n.png"];
-    CCSprite *goldanic = [CCSprite spriteWithImageNamed:@"goldanic.png"];
+//    CCSprite *goldanic = [CCSprite spriteWithImageNamed:@"goldanic.png"];
 //    skeletonNode.normalMapSpriteFrame = [normalMap copy];
-    goldanic.normalMapSpriteFrame = normalMap;
-    [goldanic setPosition:ccp(500, 350)];
-    goldanic.effect = [CCEffectLighting effectWithGroups:@[@"g1"] specularColor:[CCColor whiteColor] shininess:1.0];
-    goldanic.name = @"goldanic";
+//    goldanic.normalMapSpriteFrame = normalMap;
+//    [goldanic setPosition:ccp(500, 350)];
+//    goldanic.effect = [CCEffectLighting effectWithGroups:@[@"g1"] specularColor:[CCColor whiteColor] shininess:1.0];
+//    goldanic.name = @"goldanic";
 //    [self addChild:goldanic z:10];
-	[skeletonNode setAnimationForTrack:0 name:@"idle" loop:YES];
-	[skeletonNode1 setAnimationForTrack:0 name:@"idle" loop:YES];
+//	[skeletonNode setAnimationForTrack:0 name:@"idle" loop:YES];
+//	[skeletonNode1 setAnimationForTrack:0 name:@"idle" loop:YES];
     CGSize size = [[CCDirector sharedDirector] viewSize];
     CCLightNode *lightNode = [CCLightNode lightWithType:CCLightPoint groups:@[@"g1"]
                          color:[CCColor whiteColor] intensity:0.8
@@ -116,10 +116,17 @@
 	// [skeletonNode setAnimationForTrack:1 name:@"test" loop:YES];
 
 	CGSize windowSize = size;
-	[skeletonNode setPosition:ccp(windowSize.width / 2, 20)];
-	[skeletonNode1 setPosition:ccp(windowSize.width / 2, 20)];
+    skeletonNode.debugBones = YES;
+    skeletonNode.debugSlots = YES;
+    skeletonNode.normalMapSpriteFrame = normalMap;
+
+	[skeletonNode setPosition:ccp(windowSize.width / 2, windowSize.height / 2)];
+	[skeletonNode1 setPosition:ccp(windowSize.width / 2, windowSize.height / 2)];
     [skeletonNode updateWorldTransform];
+    [skeletonNode1 updateWorldTransform];
 //    [self addChild:skeletonNode];
+//    [self addChild:skeletonNode1];
+    [skeletonNode addNormalSkeleton: skeletonNode1];
     [self createBackgroundTexture:skeletonNode];
 //    [goldanic addChild:skeletonNode z:10];
 //    [goldanic addChild:skeletonNode1 z:9];
@@ -149,7 +156,8 @@
 //    CCSprite* nodeSprite = [CCSprite spriteWithTexture:node.texture];
 //    nodeSprite.anchorPoint = ccp(0, 0);
     [effectNode addChild:node];
-//    effectNode.effect = [CCEffectBlur effectWithBlurRadius:3];
+//    node.effect = [CCEffectBlur effectWithBlurRadius:3];
+//    node.effect = [CCEffectLighting effectWithGroups:@[@"g1"] specularColor:[CCColor whiteColor] shininess:1.0];
     effectNode.effect = [CCEffectLighting effectWithGroups:@[@"g1"] specularColor:[CCColor whiteColor] shininess:1.0];
     effectNode.visible = YES;
     node.visible = YES;
@@ -167,6 +175,7 @@
 //    CCSprite* background = [CCSprite spriteWithTexture:renderedEffectNode.texture];
 //    background.position = ccp(500,100);
     [self addChild:effectNode z: 20];
+//    [self addChild:node z: 20];
 }
 
 - (void)update:(CCTime)delta {

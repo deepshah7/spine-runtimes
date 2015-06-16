@@ -33,7 +33,7 @@
 #import "cocos2d.h"
 
 /** Draws a skeleton. */
-@interface SkeletonRenderer : CCNode<CCBlendProtocol> {
+@interface SkeletonRenderer : CCSprite<CCBlendProtocol> {
 	spSkeleton* _skeleton;
 	spBone* _rootBone;
 	bool _debugSlots;
@@ -89,5 +89,9 @@
 @property (nonatomic) spBone* rootBone;
 /// The main texture that will be passed to this node's shader.
 @property(nonatomic, strong) CCTexture *texture;
+
+@property(nonatomic, retain) SkeletonRenderer *normalRenderer;
+
+- (void)addNormalSkeleton:(SkeletonRenderer *)animation;
 
 @end
