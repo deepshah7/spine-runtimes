@@ -233,13 +233,13 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 			GLKVector2 extents = GLKVector2Make(size.width / 2.0, size.height / 2.0);
             NSString *string = [NSString stringWithUTF8String:slot->data->name];
             if([string isEqualToString:@"eye"]) {
-                NSLog(@"DoSomething");
+//                NSLog(@"DoSomething");
             }
 			if (CCRenderCheckVisbility(transform, center, extents)) {
 				CCRenderBuffer buffer =
                         [renderer enqueueTriangles:(trianglesCount / 3) andVertexes:verticesCount
                                                          withState:self.renderState globalSortOrder:0];
-                CCVertex vertexArray[3];
+                CCVertex vertexArray[verticesCount / 2];
                 int currentIndex = -1;
 				for (int i = 0; i * 2 < verticesCount; ++i) {
 					CCVertex vertex;
@@ -248,30 +248,28 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 					vertex.texCoord1 = GLKVector2Make(uvs[i * 2], 1 - uvs[i * 2 + 1]);
 					vertex.texCoord2 = GLKVector2Make(uvs[i * 2], 1 - uvs[i * 2 + 1]);
 
-                    currentIndex++;
-                    vertexArray[currentIndex] = vertex;
+//                    if(slot->attachment->type == SP_ATTACHMENT_SKINNED_MESH) {
+                        currentIndex++;
+                        vertexArray[currentIndex] = vertex;
+//                    }
 
-//                    if(i % 3 == 0) {
-//                        _verts.bl = vertex;
-//                    }
-//                    if(i % 3 == 1) {
-//                        _verts.br = vertex;
-//                    }
-//                    if(i % 3 == 2) {
-//                        _verts.tl = vertex;
-//                        _verts.tr = vertex;
-//                    }
-//                    if(i % 4 == 3) {
-//                    }
-//                    CCRenderBufferSetVertex(buffer, i, CCVertexApplyTransform(vertex, transform));
+                    if(slot->attachment->type == SP_ATTACHMENT_REGION) {
+                        if(i % 4 == 0) {
+                            _verts.bl = vertex;
+                        }
+                        if(i % 4 == 1) {
+                            _verts.tl = vertex;
+                        }
+                        if(i % 4 == 2) {
+                            _verts.tr = vertex;
+                        }
+                        if(i % 4 == 3) {
+                            _verts.br = vertex;
+                        }
+                    }
                     if(!self.effect) {
                         CCRenderBufferSetVertex(buffer, i, CCVertexApplyTransform(vertex, transform));
-                    } else if (currentIndex >= 2) {
-                        currentIndex = 1;
-                        _verts.tr = vertexArray[0];
-                        _verts.tl = vertexArray[1];
-                        _verts.bl = vertexArray[2];
-                        _verts.br = vertexArray[2];
+                    } else if (slot->attachment->type == SP_ATTACHMENT_REGION && i % 4 == 3) {
 
                         _effectRenderer.contentSize = self.boundingBox.size;
 
@@ -289,14 +287,35 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                                          withEffect:self.effect uniforms:self.shaderUniforms
                                            renderer:renderer
                                           transform:transform];
-                        vertexArray[0] = _verts.tr;
-                        vertexArray[1] = _verts.bl;
                     }
 				}
 
-                if (!self.effect) {
+                if (/*!self.effect && */ slot->attachment->type == SP_ATTACHMENT_SKINNED_MESH) {
                     for (int j = 0; j * 3 < trianglesCount; ++j) {
-                        CCRenderBufferSetTriangle(buffer, j, triangles[j * 3], triangles[j * 3 + 1], triangles[j * 3 + 2]);
+//                        CCRenderBufferSetTriangle(buffer, j, triangles[j * 3], triangles[j * 3 + 1], triangles[j * 3 + 2]);
+
+                        _verts.tr = vertexArray[triangles[j * 3]];
+                        _verts.tl = vertexArray[triangles[j * 3 + 1]];
+                        _verts.bl = vertexArray[triangles[j * 3 + 2]];
+                        _verts.br = vertexArray[triangles[j * 3 + 2]];
+
+                        _effectRenderer.contentSize = self.boundingBox.size;
+
+                        CCEffectPrepareResult prepResult = [self.effect prepareForRenderingWithSprite:self];
+                        NSAssert(prepResult.status == CCEffectPrepareSuccess, @"Effect preparation failed.");
+
+                        if (prepResult.changes & CCEffectPrepareUniformsChanged)
+                        {
+                            // Preparing an effect for rendering can modify its uniforms
+                            // dictionary which means we need to reinitialize our copy of the
+                            // uniforms.
+                            [self updateShaderUniformsFromEffect];
+                        }
+                        [_effectRenderer drawSprite:self
+                                         withEffect:self.effect uniforms:self.shaderUniforms
+                                           renderer:renderer
+                                          transform:transform];
+
                     }
                 }
 			}
