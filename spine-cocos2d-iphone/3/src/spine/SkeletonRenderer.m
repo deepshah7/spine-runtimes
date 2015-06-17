@@ -231,35 +231,48 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 			CGSize size = texture.contentSize;
 			GLKVector2 center = GLKVector2Make(size.width / 2.0, size.height / 2.0);
 			GLKVector2 extents = GLKVector2Make(size.width / 2.0, size.height / 2.0);
-//            NSString *string = [NSString stringWithUTF8String:slot->data->name];
-//            if([string isEqualToString:@"body"]) {
-//                NSLog(@"DoSomething");
-//            }
+            NSString *string = [NSString stringWithUTF8String:slot->data->name];
+            if([string isEqualToString:@"eye"]) {
+                NSLog(@"DoSomething");
+            }
 			if (CCRenderCheckVisbility(transform, center, extents)) {
 				CCRenderBuffer buffer =
                         [renderer enqueueTriangles:(trianglesCount / 3) andVertexes:verticesCount
                                                          withState:self.renderState globalSortOrder:0];
+                CCVertex vertexArray[3];
+                int currentIndex = -1;
 				for (int i = 0; i * 2 < verticesCount; ++i) {
 					CCVertex vertex;
 					vertex.position = GLKVector4Make(_worldVertices[i * 2], _worldVertices[i * 2 + 1], 0.0, 1.0);
 					vertex.color = GLKVector4Make(r, g, b, 1);
 					vertex.texCoord1 = GLKVector2Make(uvs[i * 2], 1 - uvs[i * 2 + 1]);
 					vertex.texCoord2 = GLKVector2Make(uvs[i * 2], 1 - uvs[i * 2 + 1]);
-                    if(i % 4 == 0) {
-                        _verts.bl = vertex;
-                    }
-                    if(i % 4 == 1) {
-                        _verts.br = vertex;
-                    }
-                    if(i % 4 == 2) {
-                        _verts.tr = vertex;
-                    }
-                    if(i % 4 == 3) {
-                        _verts.tl = vertex;
-                    }
+
+                    currentIndex++;
+                    vertexArray[currentIndex] = vertex;
+
+//                    if(i % 3 == 0) {
+//                        _verts.bl = vertex;
+//                    }
+//                    if(i % 3 == 1) {
+//                        _verts.br = vertex;
+//                    }
+//                    if(i % 3 == 2) {
+//                        _verts.tl = vertex;
+//                        _verts.tr = vertex;
+//                    }
+//                    if(i % 4 == 3) {
+//                    }
+//                    CCRenderBufferSetVertex(buffer, i, CCVertexApplyTransform(vertex, transform));
                     if(!self.effect) {
                         CCRenderBufferSetVertex(buffer, i, CCVertexApplyTransform(vertex, transform));
-                    } else if (i % 4 == 3) {
+                    } else if (currentIndex >= 2) {
+                        currentIndex = 1;
+                        _verts.tr = vertexArray[0];
+                        _verts.tl = vertexArray[1];
+                        _verts.bl = vertexArray[2];
+                        _verts.br = vertexArray[2];
+
                         _effectRenderer.contentSize = self.boundingBox.size;
 
                         CCEffectPrepareResult prepResult = [self.effect prepareForRenderingWithSprite:self];
@@ -276,6 +289,8 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                                          withEffect:self.effect uniforms:self.shaderUniforms
                                            renderer:renderer
                                           transform:transform];
+                        vertexArray[0] = _verts.tr;
+                        vertexArray[1] = _verts.bl;
                     }
 				}
 
