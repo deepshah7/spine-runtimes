@@ -42,6 +42,7 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 
 @implementation SkeletonRenderer {
     BOOL isDone;
+    int count;
 }
 
 @synthesize skeleton = _skeleton;
@@ -62,6 +63,7 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 }
 
 - (void) initialize:(spSkeletonData*)skeletonData ownsSkeletonData:(bool)ownsSkeletonData {
+    count = 0;
 	_ownsSkeletonData = ownsSkeletonData;
 
 	_worldVertices = MALLOC(float, 1000); // Max number of vertices per mesh.
@@ -234,8 +236,10 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 			GLKVector2 center = GLKVector2Make(size.width / 2.0, size.height / 2.0);
 			GLKVector2 extents = GLKVector2Make(size.width / 2.0, size.height / 2.0);
             NSString *string = [NSString stringWithUTF8String:slot->data->name];
-            if([string isEqualToString:@"eye"]) {
-//                NSLog(@"DoSomething");
+            isDone = YES;
+            if([string isEqualToString:@"lt_tentacle"] && count == 0) {
+                isDone = NO;
+                count++;
             }
 			if (CCRenderCheckVisbility(transform, center, extents)) {
 				CCRenderBuffer buffer =
@@ -265,9 +269,9 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                     }
                 }
                 else {
-//                    for (int j = 0; j * 3 < trianglesCount; ++j) {
-//                        CCRenderBufferSetTriangle(buffer, j, triangles[j * 3], triangles[j * 3 + 1], triangles[j * 3 + 2]);
-//                    }
+                    for (int j = 0; j * 3 < trianglesCount; ++j) {
+                        CCRenderBufferSetTriangle(buffer, j, triangles[j * 3], triangles[j * 3 + 1], triangles[j * 3 + 2]);
+                    }
                     int triCount = MIN(trianglesCount, 9);
                     for (int j = 0; j * 3 < trianglesCount; ++j) {
 
@@ -280,26 +284,31 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                         float distV2V3 = ccpDistance(ccp(v2.position.x, v2.position.y), ccp(v3.position.x, v3.position.y));
                         float distV1V3 = ccpDistance(ccp(v1.position.x, v1.position.y), ccp(v3.position.x, v3.position.y));
 
-                        if(distV1V2 >= distV2V3 && distV1V2 >= distV1V3) {
+                        if(distV1V2 == distV2V3 && distV1V2 == distV1V3) {
+                            NSLog(@"Equilatral triangle");
+                        }
+                        else if(distV1V2 == distV2V3 || distV1V2 == distV1V3 || distV2V3 == distV1V3) {
+                            NSLog(@"ISO triangle");
+                        }
+//                        if(distV1V2 >= distV2V3 && distV1V2 >= distV1V3) {
                             v4 = [self buildV4: v1 v2: v2 v3: v3];
-                        }
+                        [self renderCyclic:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
 
-                        else if(distV2V3 >= distV1V2 && distV2V3 >= distV1V3) {
+//                        }
+
+//                        else if(distV2V3 >= distV1V2 && distV2V3 >= distV1V3) {
                             v4 = [self buildV4: v2 v2: v3 v3: v1];
-                        }
+                        [self renderCyclic:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
+//                        }
 
-                        else {
+//                        else {
                             v4 = [self buildV4: v1 v2: v3 v3: v2];
-                        }
+                        [self renderCyclic:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
+//                        }
 
-//                        _verts.bl = v1;
-//                        _verts.tl = v2;
-//                        _verts.tr = v3;
-//                        _verts.br = v4;
-//
-//                        [self renderStuff:renderer transform:transform slot:slot j:j];
+//                        [self renderCyclic:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
 
-
+                        /*
                         CCVertex ySorted[4];
                         ySorted[0] = v1; ySorted[1] = v2; ySorted[2] = v3, ySorted[3] = v4;
 
@@ -354,7 +363,7 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                             _verts.tr = ySorted[2];
                         }
 
-                        [self renderStuff:renderer transform:transform slot:slot j:j];
+                        [self renderStuff:renderer transform:transform slot:slot j:j vertexArray:vertexArray triangles:triangles];
 
                         if(xSorted[0].position.y < xSorted[1].position.y) {
                             _verts.bl = xSorted[0];
@@ -371,7 +380,8 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                             _verts.tr = xSorted[2];
                         }
 
-                        [self renderStuff:renderer transform:transform slot:slot j:j];
+                        [self renderStuff:renderer transform:transform slot:slot j:j vertexArray:vertexArray triangles:triangles];
+                        */
                     }
                 }
 			}
@@ -412,7 +422,37 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 	}
 }
 
-- (void)renderStuff:(CCRenderer *)renderer transform:(union _GLKMatrix4 const *)transform slot:(spSlot *)slot j:(int)j {
+- (void)renderCyclic:(CCRenderer *)renderer transform:(union _GLKMatrix4 const *)transform triangles:(int const *)triangles slot:(spSlot *)slot vertexArray:(CCVertex[])vertexArray j:(int)j v1:(CCVertex *)v1 v2:(CCVertex *)v2 v3:(CCVertex *)v3 v4:(CCVertex *)v4 {
+    _verts.bl = (*v1);
+    _verts.tl = (*v2);
+    _verts.tr = (*v3);
+    _verts.br = (*v4);
+
+    [self renderStuff:renderer transform:transform slot:slot j:j vertexArray:vertexArray triangles:triangles];
+
+    _verts.bl = (*v4);
+    _verts.tl = (*v1);
+    _verts.tr = (*v2);
+    _verts.br = (*v3);
+
+    [self renderStuff:renderer transform:transform slot:slot j:j vertexArray:vertexArray triangles:triangles];
+
+    _verts.bl = (*v3);
+    _verts.tl = (*v4);
+    _verts.tr = (*v1);
+    _verts.br = (*v2);
+
+    [self renderStuff:renderer transform:transform slot:slot j:j vertexArray:vertexArray triangles:triangles];
+
+    _verts.bl = (*v2);
+    _verts.tl = (*v3);
+    _verts.tr = (*v4);
+    _verts.br = (*v1);
+
+    [self renderStuff:renderer transform:transform slot:slot j:j vertexArray:vertexArray triangles:triangles];
+}
+
+- (void)renderStuff:(CCRenderer *)renderer transform:(union _GLKMatrix4 const *)transform slot:(spSlot *)slot j:(int)j vertexArray:(CCVertex[])array triangles:(int const *)triangles {
 
     if(!isDone) {
                             NSLog(@"Slot->Attachment %s, TriangleNumber: %d", slot->attachment->name, j);
@@ -420,6 +460,11 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                                     , _verts.br.position.x, _verts.br.position.y
                                     , _verts.tr.position.x, _verts.tr.position.y
                                     , _verts.tl.position.x, _verts.tl.position.y
+                            );
+                            NSLog(@"V1: (%f, %f), V2: (%f, %f), V3: (%f, %f)",
+                                    array[triangles[j]].position.x, array[triangles[j]].position.y,
+                                    array[triangles[j+1]].position.x, array[triangles[j+1]].position.y,
+                                    array[triangles[j+2]].position.x, array[triangles[j+2]].position.y
                             );
                         }
 
