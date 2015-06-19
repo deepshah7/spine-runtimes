@@ -251,9 +251,10 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                     currentIndex++;
                     vertexArray[currentIndex] = vertex;
 
-                    if(!self.effect) {
-                        CCRenderBufferSetVertex(buffer, i, CCVertexApplyTransform(vertex, transform));
-                    }
+//                    CCRenderBufferSetVertex(buffer, i, CCVertexApplyTransform(vertex, transform));
+//                    if(!self.effect) {
+//                        CCRenderBufferSetVertex(buffer, i, CCVertexApplyTransform(vertex, transform));
+//                    }
 				}
 
                 if(!self.effect) {
@@ -262,12 +263,120 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                     }
                 }
                 else {
+//                    for (int j = 0; j * 3 < trianglesCount; ++j) {
+//                        CCRenderBufferSetTriangle(buffer, j, triangles[j * 3], triangles[j * 3 + 1], triangles[j * 3 + 2]);
+//                    }
+                    int triCount = MIN(trianglesCount, 9);
                     for (int j = 0; j * 3 < trianglesCount; ++j) {
 
-                        _verts.tr = vertexArray[triangles[j * 3]];
-                        _verts.tl = vertexArray[triangles[j * 3 + 1]];
-                        _verts.bl = vertexArray[triangles[j * 3 + 2]];
-                        _verts.br = vertexArray[triangles[j * 3 + 2]];
+                        CCVertex v1 = vertexArray[triangles[j * 3]];
+                        CCVertex v2 = vertexArray[triangles[j * 3 + 1]];
+                        CCVertex v3 = vertexArray[triangles[j * 3 + 2]];
+                        if(
+                                v1.position.x <= v2.position.x
+                            &&  v1.position.x <= v3.position.x
+                            &&  v1.position.y <= v2.position.y
+                            &&  v1.position.y <= v3.position.y
+                                ) {
+                            _verts.bl = v1;
+                            if(
+                                v2.position.x <= v3.position.x
+                                    ) {
+                                _verts.tl = v2;
+                                _verts.tr = v3;
+                                _verts.br = [self computeBr];
+                            } else {
+                                _verts.tl = v3;
+                                _verts.tr = v2;
+                                _verts.br = [self computeBr];
+                            }
+                        }
+                        else if(
+                                v2.position.x <= v1.position.x
+                            &&  v2.position.x <= v3.position.x
+                            &&  v2.position.y <= v1.position.y
+                            &&  v2.position.y <= v3.position.y
+                                ) {
+                            _verts.bl = v2;
+                            if(
+                                    v1.position.x <= v3.position.x
+                                    ) {
+                                _verts.tl = v1;
+                                _verts.tr = v3;
+                                _verts.br = [self computeBr];
+                            } else {
+                                _verts.tl = v3;
+                                _verts.tr = v1;
+                                _verts.br = [self computeBr];
+                            }
+                        }
+                        else if(
+                                v3.position.x <= v2.position.x
+                            &&  v3.position.x <= v1.position.x
+                            &&  v3.position.y <= v2.position.y
+                            &&  v3.position.y <= v1.position.y
+                                ) {
+                            _verts.bl = v3;
+                            if(
+                                    v2.position.x <= v1.position.x
+                                    ) {
+                                _verts.tl = v2;
+                                _verts.tr = v1;
+                                _verts.br = [self computeBr];
+                            } else {
+                                _verts.tl = v1;
+                                _verts.tr = v2;
+                                _verts.br = [self computeBr];
+                            }
+                        }
+                        else if(
+                                v1.position.y <= v2.position.y
+                            &&  v1.position.y <= v3.position.y
+                                ) {
+                            _verts.bl = v1;
+                            if(
+                                    v2.position.x <= v3.position.x
+                                    ) {
+                                _verts.tl = v2;
+                                _verts.tr = v3;
+                                _verts.br = [self computeBr];
+                            } else {
+                                _verts.tl = v3;
+                                _verts.tr = v2;
+                                _verts.br = [self computeBr];
+                            }
+                        }
+                        else if(
+                                v2.position.y <= v1.position.y
+                            &&  v2.position.y <= v3.position.y
+                                ) {
+                            _verts.bl = v2;
+                            if(
+                                    v1.position.x <= v3.position.x
+                                    ) {
+                                _verts.tl = v1;
+                                _verts.tr = v3;
+                                _verts.br = [self computeBr];
+                            } else {
+                                _verts.tl = v3;
+                                _verts.tr = v1;
+                                _verts.br = [self computeBr];
+                            }
+                        }
+                        else {
+                            _verts.bl = v3;
+                            if(
+                                    v2.position.x <= v1.position.x
+                                    ) {
+                                _verts.tl = v2;
+                                _verts.tr = v1;
+                                _verts.br = [self computeBr];
+                            } else {
+                                _verts.tl = v1;
+                                _verts.tr = v2;
+                                _verts.br = [self computeBr];
+                            }
+                        }
 
                         _effectRenderer.contentSize = self.boundingBox.size;
 
@@ -323,6 +432,24 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 			if (i == 0) [_drawNode drawDot:ccp(bone->worldX, bone->worldY) radius:4 color:[CCColor blueColor]];
 		}
 	}
+}
+
+- (CCVertex)computeBr {
+    CCVertex vertex;
+    vertex.position = GLKVector4Make(
+            _verts.tr.position.x >= _verts.bl.position.x ? _verts.tr.position.x : _verts.bl.position.x ,
+            _verts.tr.position.y <= _verts.bl.position.y ? _verts.tr.position.y : _verts.bl.position.y ,
+            0.0, 1.0);
+    vertex.color = _verts.bl.color;
+    vertex.texCoord1 = GLKVector2Make(
+            _verts.tr.texCoord1.x >= _verts.bl.texCoord1.x ? _verts.tr.texCoord1.x : _verts.bl.texCoord1.x ,
+            _verts.tr.texCoord1.y <= _verts.bl.texCoord1.y ? _verts.tr.texCoord1.y : _verts.bl.texCoord1.y
+    );
+    vertex.texCoord2 = GLKVector2Make(
+            _verts.tr.texCoord1.x >= _verts.bl.texCoord1.x ? _verts.tr.texCoord1.x : _verts.bl.texCoord1.x ,
+            _verts.tr.texCoord1.y <= _verts.bl.texCoord1.y ? _verts.tr.texCoord1.y : _verts.bl.texCoord1.y
+    );
+    return vertex;
 }
 
 - (CCTexture*) getTextureForRegion:(spRegionAttachment*)attachment {
