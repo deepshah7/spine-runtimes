@@ -40,7 +40,9 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 - (void) initialize:(spSkeletonData*)skeletonData ownsSkeletonData:(bool)ownsSkeletonData;
 @end
 
-@implementation SkeletonRenderer
+@implementation SkeletonRenderer {
+    BOOL isDone;
+}
 
 @synthesize skeleton = _skeleton;
 @synthesize rootBone = _rootBone;
@@ -233,7 +235,7 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 			GLKVector2 extents = GLKVector2Make(size.width / 2.0, size.height / 2.0);
             NSString *string = [NSString stringWithUTF8String:slot->data->name];
             if([string isEqualToString:@"eye"]) {
-                NSLog(@"DoSomething");
+//                NSLog(@"DoSomething");
             }
 			if (CCRenderCheckVisbility(transform, center, extents)) {
 				CCRenderBuffer buffer =
@@ -274,9 +276,9 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                         CCVertex v3 = vertexArray[triangles[j * 3 + 2]];
                         CCVertex v4;
 
-                        float distV1V2 = ccpDistance(ccp(v1.position.x, v1.position.y), ccp(v2.position.x, v2.position.y));
-                        float distV2V3 = ccpDistance(ccp(v2.position.x, v2.position.y), ccp(v3.position.x, v3.position.y));
-                        float distV1V3 = ccpDistance(ccp(v1.position.x, v1.position.y), ccp(v3.position.x, v3.position.y));
+                        float distV1V2 = ccpDistance(ccp(v1.texCoord1.x, v1.texCoord1.y), ccp(v2.texCoord1.x, v2.texCoord1.y));
+                        float distV2V3 = ccpDistance(ccp(v2.texCoord1.x, v2.texCoord1.y), ccp(v3.texCoord1.x, v3.texCoord1.y));
+                        float distV1V3 = ccpDistance(ccp(v1.texCoord1.x, v1.texCoord1.y), ccp(v3.texCoord1.x, v3.texCoord1.y));
 
                         if(distV1V2 >= distV2V3 && distV1V2 >= distV1V3) {
                             v4 = [self buildV4: v1 v2: v2 v3: v3];
@@ -290,179 +292,52 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                             v4 = [self buildV4: v1 v2: v3 v3: v2];
                         }
 
-                        CCVertex vertices[4], sortedVertices[4];
-                        vertices[0] = v1; vertices[1] = v2; vertices[2] = v3, vertices[3] = v4;
+                        CCVertex ySorted[4];
+                        ySorted[0] = v1; ySorted[1] = v2; ySorted[2] = v3, ySorted[3] = v4;
+
+                        CCVertex xSorted[4];
+                        xSorted[0] = v1; xSorted[1] = v2; xSorted[2] = v3, xSorted[3] = v4;
 
 
                         for (int k = 0; k < 4; ++k) {
                             for (int l = k+1; l < 4; ++l) {
-                                if(vertices[k].position.y > vertices[l].position.y) {
-                                    CCVertex temp = vertices[k];
-                                    vertices[k] = vertices[l];
-                                    vertices[l] = temp;
+                                if(ySorted[k].texCoord1.y > ySorted[l].texCoord1.y) {
+                                    CCVertex temp = ySorted[k];
+                                    ySorted[k] = ySorted[l];
+                                    ySorted[l] = temp;
+                                } else if(ySorted[k].texCoord1.y == ySorted[l].texCoord1.y && ySorted[k].texCoord1.x > ySorted[l].texCoord1.x) {
+                                    NSLog(@"sdfkfjklslkf#@@@@@@@@@@@@@@Y same X sorting!");
+                                    CCVertex temp = ySorted[k];
+                                    ySorted[k] = ySorted[l];
+                                    ySorted[l] = temp;
                                 }
                             }
                         }
 
-                        if(vertices[0].position.x < vertices[1].position.x) {
-                            _verts.bl = vertices[0];
-                            _verts.br = vertices[1];
-                        } else {
-                            _verts.bl = vertices[1];
-                            _verts.br = vertices[0];
+                        for (int k = 0; k < 4; ++k) {
+                            for (int l = k+1; l < 4; ++l) {
+                                if(xSorted[k].texCoord1.x > xSorted[l].texCoord1.x) {
+                                    CCVertex temp = xSorted[k];
+                                    xSorted[k] = xSorted[l];
+                                    xSorted[l] = temp;
+                                } else if(xSorted[k].texCoord1.x == xSorted[l].texCoord1.x && xSorted[k].texCoord1.y > xSorted[l].texCoord1.y) {
+                                    NSLog(@"sdfkfjklslkf#@@@@@@@@@@@@@@X same Y sorting!");
+                                    CCVertex temp = xSorted[k];
+                                    xSorted[k] = xSorted[l];
+                                    xSorted[l] = temp;
+                                }
+                            }
                         }
-                        if(vertices[2].position.x < vertices[3].position.x) {
-                            _verts.tl = vertices[2];
-                            _verts.tr = vertices[3];
-                        } else {
-                            _verts.tl = vertices[3];
-                            _verts.tr = vertices[2];
-                        }
 
-//
-//                        BOOL isBlFound = [self isBlFound:v1 v2:v2 v3:v3];
-//                        BOOL isTrFound = [self isBlFound:v1 v2:v2 v3:v3];
-////                        CCSpriteVertexes newVerts;
-////                        _verts = newVerts;
-//                        if(
-//                                v1.position.x <= v2.position.x
-//                            &&  v1.position.x <= v3.position.x
-//                            &&  (v1.position.y <= v2.position.y
-//                            ||  v1.position.y <= v3.position.y)
-//                                ) {
-//                            _verts.bl = v1;
-//                            if(v2.position.y >= v3.position.y) {
-//                                _verts.tr = v2;
-//                                _verts.br = v3;
-//                                _verts.tl = [self computeTl];
-//                            } else {
-//                                _verts.tr = v3;
-//                                _verts.br = v2;
-//                                _verts.tl = [self computeTl];
-//                            }
-//                        }
-//                        else if(
-//                                v2.position.x <= v1.position.x
-//                            &&  v2.position.x <= v3.position.x
-//                            &&  (v2.position.y <= v1.position.y
-//                            ||  v2.position.y <= v3.position.y)
-//                                ) {
-//                            _verts.bl = v2;
-//                            if(v1.position.y >= v3.position.y) {
-//                                _verts.tr = v1;
-//                                _verts.br = v3;
-//                                _verts.tl = [self computeTl];
-//                            } else {
-//                                _verts.tr = v3;
-//                                _verts.br = v1;
-//                                _verts.tl = [self computeTl];
-//                            }
-//                        }
-//                        else if(
-//                                v3.position.x <= v1.position.x
-//                            &&  v3.position.x <= v2.position.x
-//                            &&  (v3.position.y <= v1.position.y
-//                            ||  v3.position.y <= v2.position.y)
-//                                ) {
-//                            _verts.bl = v3;
-//                            if(v1.position.y >= v2.position.y) {
-//                                _verts.tr = v1;
-//                                _verts.br = v2;
-//                                _verts.tl = [self computeTl];
-//                            } else {
-//                                _verts.tr = v2;
-//                                _verts.br = v1;
-//                                _verts.tl = [self computeTl];
-//                            }
-//                        }
-//                        else if(
-//                                v3.position.x <= v1.position.x
-//                            &&  v3.position.x <= v2.position.x
-//                            &&  (v3.position.y <= v1.position.y
-//                            ||  v3.position.y <= v2.position.y)
-//                                ) {
-//                            _verts.bl = v3;
-//                            if(v1.position.y >= v2.position.y) {
-//                                _verts.tr = v1;
-//                                _verts.br = v2;
-//                                _verts.tl = [self computeTl];
-//                            } else {
-//                                _verts.tr = v2;
-//                                _verts.br = v1;
-//                                _verts.tl = [self computeTl];
-//                            }
-//                        }
-//
-//
-//
-//                        else if(
-//                                v1.position.y <= v2.position.y
-//                            &&  v1.position.y <= v3.position.y
-//                                ) {
-//                            _verts.br = v1;
-//                            if(v2.position.x >= v3.position.x) {
-//                                _verts.tr = v2;
-//                                _verts.tl = v3;
-//                                _verts.bl = [self computeBl];
-//                            } else {
-//                                _verts.tr = v3;
-//                                _verts.tl = v2;
-//                                _verts.bl = [self computeBl];
-//                            }
-//                        } else if(
-//                                v2.position.y <= v1.position.y
-//                            &&  v2.position.y <= v3.position.y
-//                                ) {
-//                            _verts.br = v2;
-//                            if(v1.position.x >= v3.position.x) {
-//                                _verts.tr = v1;
-//                                _verts.tl = v3;
-//                                _verts.bl = [self computeBl];
-//                            } else {
-//                                _verts.tr = v3;
-//                                _verts.tl = v1;
-//                                _verts.bl = [self computeBl];
-//                            }
-//                        } else if(
-//                                v3.position.y <= v1.position.y
-//                            &&  v3.position.y <= v2.position.y
-//                                ) {
-//                            _verts.br = v3;
-//                            if(v2.position.x >= v1.position.x) {
-//                                _verts.tr = v2;
-//                                _verts.tl = v1;
-//                                _verts.bl = [self computeBl];
-//                            } else {
-//                                _verts.tr = v1;
-//                                _verts.tl = v2;
-//                                _verts.bl = [self computeBl];
-//                            }
-//                        } else {
-//                            NSLog(@"No love!");
-//                        }
-
-                        _effectRenderer.contentSize = self.boundingBox.size;
-
-                        CCEffectPrepareResult prepResult = [self.effect prepareForRenderingWithSprite:self];
-                        NSAssert(prepResult.status == CCEffectPrepareSuccess, @"Effect preparation failed.");
-
-                        if (prepResult.changes & CCEffectPrepareUniformsChanged)
-                        {
-                            // Preparing an effect for rendering can modify its uniforms
-                            // dictionary which means we need to reinitialize our copy of the
-                            // uniforms.
-                            [self updateShaderUniformsFromEffect];
-                        }
-                        [_effectRenderer drawSprite:self
-                                         withEffect:self.effect uniforms:self.shaderUniforms
-                                           renderer:renderer
-                                          transform:transform];
+                        [self renderStuff:renderer transform:transform slot:slot j:j ySorted:ySorted];
+                        [self renderStuff:renderer transform:transform slot:slot j:j ySorted:xSorted];
 
                     }
                 }
 			}
 		}
 	}
+    isDone = YES;
 	[_drawNode clear];
 	if (_debugSlots) {
 		// Slots.
@@ -497,6 +372,49 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 	}
 }
 
+- (void)renderStuff:(CCRenderer *)renderer transform:(union _GLKMatrix4 const *)transform slot:(spSlot *)slot j:(int)j ySorted:(CCVertex[4])ySorted {
+    if(ySorted[0].texCoord1.x < ySorted[1].texCoord1.x) {
+                            _verts.bl = ySorted[0];
+                            _verts.br = ySorted[1];
+                        } else {
+                            _verts.bl = ySorted[1];
+                            _verts.br = ySorted[0];
+                        }
+    if(ySorted[2].texCoord1.x < ySorted[3].texCoord1.x) {
+                            _verts.tl = ySorted[2];
+                            _verts.tr = ySorted[3];
+                        } else {
+                            _verts.tl = ySorted[3];
+                            _verts.tr = ySorted[2];
+                        }
+
+    if(!isDone) {
+                            NSLog(@"Slot->Attachment %s, TriangleNumber: %d", slot->attachment->name, j);
+                            NSLog(@"BL: (%f, %f), BR: (%f, %f), TR: (%f, %f), TL: (%f, %f)", _verts.bl.position.x, _verts.bl.position.y
+                                    , _verts.br.position.x, _verts.br.position.y
+                                    , _verts.tr.position.x, _verts.tr.position.y
+                                    , _verts.tl.position.x, _verts.tl.position.y
+                            );
+                        }
+
+    _effectRenderer.contentSize = self.boundingBox.size;
+
+    CCEffectPrepareResult prepResult = [self.effect prepareForRenderingWithSprite:self];
+    NSAssert(prepResult.status == CCEffectPrepareSuccess, @"Effect preparation failed.");
+
+    if (prepResult.changes & CCEffectPrepareUniformsChanged)
+                        {
+                            // Preparing an effect for rendering can modify its uniforms
+                            // dictionary which means we need to reinitialize our copy of the
+                            // uniforms.
+                            [self updateShaderUniformsFromEffect];
+                        }
+    [_effectRenderer drawSprite:self
+                     withEffect:self.effect uniforms:self.shaderUniforms
+                       renderer:renderer
+                      transform:transform];
+}
+
 - (CCVertex)buildV4:(CCVertex)v1 v2:(CCVertex)v2 v3:(CCVertex)v3 {
     CCVertex result;
     CGPoint v1Point = ccp(v1.position.x, v1.position.y);
@@ -505,10 +423,6 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
     CGPoint v1TPoint = ccp(v1.texCoord1.x, v1.texCoord1.y);
     CGPoint v2TPoint = ccp(v2.texCoord1.x, v2.texCoord1.y);
     CGPoint midTPoint = ccpMidpoint(v1TPoint, v2TPoint);
-//    int xMultiplier = midPoint.x >= v3.position.x? 1 : -1;
-//    int yMultiplier = midPoint.y >= v3.position.y? 1 : -1;
-//    int xTMultiplier = midTPoint.x >= v3.texCoord1.x? 1 : -1;
-//    int yTMultiplier = midTPoint.y >= v3.texCoord1.y? 1 : -1;
 
     result.position = GLKVector4Make(v3.position.x
             + (midPoint.x - v3.position.x) * 2,
@@ -521,85 +435,6 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
     return result;
 }
 
-- (BOOL)isBlFound:(CCVertex)v1 v2:(CCVertex)v2 v3:(CCVertex)v3 {
-    CGPoint point = ccp(MIN(MIN(v1.position.x, v2.position.x), v3.position.x), MIN(MIN(v1.position.y, v2.position.y), v3.position.y));
-    return CGPointEqualToPoint(point, ccp(v1.position.x, v1.position.y))
-        || CGPointEqualToPoint(point, ccp(v2.position.x, v2.position.y))
-        || CGPointEqualToPoint(point, ccp(v3.position.x, v3.position.y))
-            ;
-}
-
-- (CCVertex)computeBl {
-    CCVertex vertex;
-    vertex.position = GLKVector4Make(
-            _verts.br.position.x <= _verts.tl.position.x ? _verts.tr.position.x : _verts.bl.position.x ,
-            _verts.br.position.y <= _verts.tl.position.y ? _verts.tr.position.y : _verts.bl.position.y ,
-            0.0, 1.0);
-    vertex.color = _verts.bl.color;
-    vertex.texCoord1 = GLKVector2Make(
-            _verts.br.texCoord1.x <= _verts.tl.texCoord1.x ? _verts.tr.texCoord1.x : _verts.bl.texCoord1.x ,
-            _verts.br.texCoord1.y <= _verts.tl.texCoord1.y ? _verts.tr.texCoord1.y : _verts.bl.texCoord1.y
-    );
-    vertex.texCoord2 = GLKVector2Make(
-            _verts.br.texCoord1.x <= _verts.tl.texCoord1.x ? _verts.tr.texCoord1.x : _verts.bl.texCoord1.x ,
-            _verts.br.texCoord1.y <= _verts.tl.texCoord1.y ? _verts.tr.texCoord1.y : _verts.bl.texCoord1.y
-    );
-    return vertex;
-}
-
-- (CCVertex)computeBr {
-    CCVertex vertex;
-    vertex.position = GLKVector4Make(
-            _verts.tr.position.x >= _verts.bl.position.x ? _verts.tr.position.x : _verts.bl.position.x ,
-            _verts.tr.position.y <= _verts.bl.position.y ? _verts.tr.position.y : _verts.bl.position.y ,
-            0.0, 1.0);
-    vertex.color = _verts.bl.color;
-    vertex.texCoord1 = GLKVector2Make(
-            _verts.tr.texCoord1.x >= _verts.bl.texCoord1.x ? _verts.tr.texCoord1.x : _verts.bl.texCoord1.x ,
-            _verts.tr.texCoord1.y <= _verts.bl.texCoord1.y ? _verts.tr.texCoord1.y : _verts.bl.texCoord1.y
-    );
-    vertex.texCoord2 = GLKVector2Make(
-            _verts.tr.texCoord1.x >= _verts.bl.texCoord1.x ? _verts.tr.texCoord1.x : _verts.bl.texCoord1.x ,
-            _verts.tr.texCoord1.y <= _verts.bl.texCoord1.y ? _verts.tr.texCoord1.y : _verts.bl.texCoord1.y
-    );
-    return vertex;
-}
-
-- (CCVertex)computeTl {
-    CCVertex vertex;
-    vertex.position = GLKVector4Make(
-            _verts.tr.position.x <= _verts.bl.position.x ? _verts.tr.position.x : _verts.bl.position.x ,
-            _verts.tr.position.y >= _verts.bl.position.y ? _verts.tr.position.y : _verts.bl.position.y ,
-            0.0, 1.0);
-    vertex.color = _verts.tr.color;
-    vertex.texCoord1 = GLKVector2Make(
-            _verts.tr.texCoord1.x <= _verts.bl.texCoord1.x ? _verts.tr.texCoord1.x : _verts.bl.texCoord1.x ,
-            _verts.tr.texCoord1.y >= _verts.bl.texCoord1.y ? _verts.tr.texCoord1.y : _verts.bl.texCoord1.y
-    );
-    vertex.texCoord2 = GLKVector2Make(
-            _verts.tr.texCoord1.x <= _verts.bl.texCoord1.x ? _verts.tr.texCoord1.x : _verts.bl.texCoord1.x ,
-            _verts.tr.texCoord1.y >= _verts.bl.texCoord1.y ? _verts.tr.texCoord1.y : _verts.bl.texCoord1.y
-    );
-    return vertex;
-}
-
-- (CCVertex)computeTr {
-    CCVertex vertex;
-    vertex.position = GLKVector4Make(
-            _verts.tl.position.x >= _verts.br.position.x ? _verts.tl.position.x : _verts.br.position.x ,
-            _verts.tl.position.y >= _verts.br.position.y ? _verts.tl.position.y : _verts.br.position.y ,
-            0.0, 1.0);
-    vertex.color = _verts.tr.color;
-    vertex.texCoord1 = GLKVector2Make(
-            _verts.tl.texCoord1.x >= _verts.br.texCoord1.x ? _verts.tl.texCoord1.x : _verts.br.texCoord1.x ,
-            _verts.tl.texCoord1.y >= _verts.br.texCoord1.y ? _verts.tl.texCoord1.y : _verts.br.texCoord1.y
-    );
-    vertex.texCoord2 = GLKVector2Make(
-            _verts.tl.texCoord1.x >= _verts.br.texCoord1.x ? _verts.tl.texCoord1.x : _verts.br.texCoord1.x ,
-            _verts.tl.texCoord1.y >= _verts.br.texCoord1.y ? _verts.tl.texCoord1.y : _verts.br.texCoord1.y
-    );
-    return vertex;
-}
 
 - (CCTexture*) getTextureForRegion:(spRegionAttachment*)attachment {
 
