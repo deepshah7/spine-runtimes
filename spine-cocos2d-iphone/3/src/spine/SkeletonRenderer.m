@@ -272,110 +272,147 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                         CCVertex v1 = vertexArray[triangles[j * 3]];
                         CCVertex v2 = vertexArray[triangles[j * 3 + 1]];
                         CCVertex v3 = vertexArray[triangles[j * 3 + 2]];
+//                        CCSpriteVertexes newVerts;
+//                        _verts = newVerts;
                         if(
                                 v1.position.x <= v2.position.x
                             &&  v1.position.x <= v3.position.x
-                            &&  v1.position.y <= v2.position.y
-                            &&  v1.position.y <= v3.position.y
+                            &&  (v1.position.y <= v2.position.y
+                            ||  v1.position.y <= v3.position.y)
                                 ) {
                             _verts.bl = v1;
-                            if(
-                                v2.position.x <= v3.position.x
-                                    ) {
-                                _verts.tl = v2;
-                                _verts.tr = v3;
-                                _verts.br = [self computeBr];
-                            } else {
-                                _verts.tl = v3;
+                            if(v2.position.y >= v3.position.y) {
                                 _verts.tr = v2;
-                                _verts.br = [self computeBr];
+                                _verts.br = v3;
+                                _verts.tl = [self computeTl];
+                            } else {
+                                _verts.tr = v3;
+                                _verts.br = v2;
+                                _verts.tl = [self computeTl];
                             }
                         }
                         else if(
                                 v2.position.x <= v1.position.x
                             &&  v2.position.x <= v3.position.x
-                            &&  v2.position.y <= v1.position.y
-                            &&  v2.position.y <= v3.position.y
+                            &&  (v2.position.y <= v1.position.y
+                            ||  v2.position.y <= v3.position.y)
                                 ) {
                             _verts.bl = v2;
-                            if(
-                                    v1.position.x <= v3.position.x
-                                    ) {
-                                _verts.tl = v1;
-                                _verts.tr = v3;
-                                _verts.br = [self computeBr];
-                            } else {
-                                _verts.tl = v3;
+                            if(v1.position.y >= v3.position.y) {
                                 _verts.tr = v1;
-                                _verts.br = [self computeBr];
+                                _verts.br = v3;
+                                _verts.tl = [self computeTl];
+                            } else {
+                                _verts.tr = v3;
+                                _verts.br = v1;
+                                _verts.tl = [self computeTl];
                             }
                         }
                         else if(
-                                v3.position.x <= v2.position.x
-                            &&  v3.position.x <= v1.position.x
-                            &&  v3.position.y <= v2.position.y
-                            &&  v3.position.y <= v1.position.y
+                                v3.position.x <= v1.position.x
+                            &&  v3.position.x <= v2.position.x
+                            &&  (v3.position.y <= v1.position.y
+                            ||  v3.position.y <= v2.position.y)
                                 ) {
                             _verts.bl = v3;
-                            if(
-                                    v2.position.x <= v1.position.x
-                                    ) {
-                                _verts.tl = v2;
+                            if(v1.position.y >= v2.position.y) {
                                 _verts.tr = v1;
-                                _verts.br = [self computeBr];
+                                _verts.br = v2;
+                                _verts.tl = [self computeTl];
                             } else {
-                                _verts.tl = v1;
                                 _verts.tr = v2;
-                                _verts.br = [self computeBr];
+                                _verts.br = v1;
+                                _verts.tl = [self computeTl];
                             }
                         }
+                        else if(
+                                v3.position.x <= v1.position.x
+                            &&  v3.position.x <= v2.position.x
+                            &&  (v3.position.y <= v1.position.y
+                            ||  v3.position.y <= v2.position.y)
+                                ) {
+                            _verts.bl = v3;
+                            if(v1.position.y >= v2.position.y) {
+                                _verts.tr = v1;
+                                _verts.br = v2;
+                                _verts.tl = [self computeTl];
+                            } else {
+                                _verts.tr = v2;
+                                _verts.br = v1;
+                                _verts.tl = [self computeTl];
+                            }
+                        }
+
+
+
                         else if(
                                 v1.position.y <= v2.position.y
                             &&  v1.position.y <= v3.position.y
                                 ) {
                             _verts.bl = v1;
-                            if(
-                                    v2.position.x <= v3.position.x
-                                    ) {
-                                _verts.tl = v2;
+                            if(v2.position.x >= v3.position.x && v2.position.y >= v3.position.y) {
+                                _verts.tr = v2;
+                                _verts.tl = v3;
+                                _verts.br = [self computeBr];
+                            } else if(v2.position.x >= v3.position.x && v2.position.y <= v3.position.y) {
+                                _verts.br = v2;
+                                _verts.tl = v3;
+                                _verts.tr = [self computeTr];
+                            }else if(v3.position.x >= v2.position.x && v3.position.y >= v2.position.y) {
                                 _verts.tr = v3;
+                                _verts.tl = v2;
                                 _verts.br = [self computeBr];
                             } else {
-                                _verts.tl = v3;
-                                _verts.tr = v2;
-                                _verts.br = [self computeBr];
+                                _verts.br = v3;
+                                _verts.tl = v2;
+                                _verts.tr = [self computeTr];
                             }
-                        }
-                        else if(
+                        } else if(
                                 v2.position.y <= v1.position.y
                             &&  v2.position.y <= v3.position.y
                                 ) {
                             _verts.bl = v2;
-                            if(
-                                    v1.position.x <= v3.position.x
-                                    ) {
-                                _verts.tl = v1;
-                                _verts.tr = v3;
-                                _verts.br = [self computeBr];
-                            } else {
+                            if(v1.position.x >= v3.position.x && v1.position.y >= v3.position.y) {
+                                _verts.tr = v1;
                                 _verts.tl = v3;
-                                _verts.tr = v1;
                                 _verts.br = [self computeBr];
-                            }
-                        }
-                        else {
-                            _verts.bl = v3;
-                            if(
-                                    v2.position.x <= v1.position.x
-                                    ) {
-                                _verts.tl = v2;
-                                _verts.tr = v1;
+                            } else if(v1.position.x >= v3.position.x && v1.position.y <= v3.position.y) {
+                                _verts.br = v1;
+                                _verts.tl = v3;
+                                _verts.tr = [self computeTr];
+                            }else if(v3.position.x >= v1.position.x && v3.position.y >= v1.position.y) {
+                                _verts.tr = v3;
+                                _verts.tl = v1;
                                 _verts.br = [self computeBr];
                             } else {
+                                _verts.br = v3;
                                 _verts.tl = v1;
-                                _verts.tr = v2;
-                                _verts.br = [self computeBr];
+                                _verts.tr = [self computeTr];
                             }
+                        } else if(
+                                v3.position.y <= v1.position.y
+                            &&  v3.position.y <= v2.position.y
+                                ) {
+                            _verts.bl = v3;
+                            if(v2.position.x >= v1.position.x && v2.position.y >= v1.position.y) {
+                                _verts.tr = v2;
+                                _verts.tl = v1;
+                                _verts.br = [self computeBr];
+                            } else if(v2.position.x >= v1.position.x && v2.position.y <= v1.position.y) {
+                                _verts.br = v2;
+                                _verts.tl = v1;
+                                _verts.tr = [self computeTr];
+                            }else if(v1.position.x >= v2.position.x && v1.position.y >= v2.position.y) {
+                                _verts.tr = v1;
+                                _verts.tl = v2;
+                                _verts.br = [self computeBr];
+                            } else {
+                                _verts.br = v1;
+                                _verts.tl = v2;
+                                _verts.tr = [self computeTr];
+                            }
+                        } else {
+                            NSLog(@"No love!");
                         }
 
                         _effectRenderer.contentSize = self.boundingBox.size;
@@ -448,6 +485,42 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
     vertex.texCoord2 = GLKVector2Make(
             _verts.tr.texCoord1.x >= _verts.bl.texCoord1.x ? _verts.tr.texCoord1.x : _verts.bl.texCoord1.x ,
             _verts.tr.texCoord1.y <= _verts.bl.texCoord1.y ? _verts.tr.texCoord1.y : _verts.bl.texCoord1.y
+    );
+    return vertex;
+}
+
+- (CCVertex)computeTl {
+    CCVertex vertex;
+    vertex.position = GLKVector4Make(
+            _verts.tr.position.x <= _verts.bl.position.x ? _verts.tr.position.x : _verts.bl.position.x ,
+            _verts.tr.position.y >= _verts.bl.position.y ? _verts.tr.position.y : _verts.bl.position.y ,
+            0.0, 1.0);
+    vertex.color = _verts.tr.color;
+    vertex.texCoord1 = GLKVector2Make(
+            _verts.tr.texCoord1.x <= _verts.bl.texCoord1.x ? _verts.tr.texCoord1.x : _verts.bl.texCoord1.x ,
+            _verts.tr.texCoord1.y >= _verts.bl.texCoord1.y ? _verts.tr.texCoord1.y : _verts.bl.texCoord1.y
+    );
+    vertex.texCoord2 = GLKVector2Make(
+            _verts.tr.texCoord1.x <= _verts.bl.texCoord1.x ? _verts.tr.texCoord1.x : _verts.bl.texCoord1.x ,
+            _verts.tr.texCoord1.y >= _verts.bl.texCoord1.y ? _verts.tr.texCoord1.y : _verts.bl.texCoord1.y
+    );
+    return vertex;
+}
+
+- (CCVertex)computeTr {
+    CCVertex vertex;
+    vertex.position = GLKVector4Make(
+            _verts.tl.position.x <= _verts.br.position.x ? _verts.tl.position.x : _verts.br.position.x ,
+            _verts.tl.position.y >= _verts.br.position.y ? _verts.tl.position.y : _verts.br.position.y ,
+            0.0, 1.0);
+    vertex.color = _verts.tr.color;
+    vertex.texCoord1 = GLKVector2Make(
+            _verts.tl.texCoord1.x <= _verts.br.texCoord1.x ? _verts.tl.texCoord1.x : _verts.br.texCoord1.x ,
+            _verts.tl.texCoord1.y >= _verts.br.texCoord1.y ? _verts.tl.texCoord1.y : _verts.br.texCoord1.y
+    );
+    vertex.texCoord2 = GLKVector2Make(
+            _verts.tl.texCoord1.x <= _verts.br.texCoord1.x ? _verts.tl.texCoord1.x : _verts.br.texCoord1.x ,
+            _verts.tl.texCoord1.y >= _verts.br.texCoord1.y ? _verts.tl.texCoord1.y : _verts.br.texCoord1.y
     );
     return vertex;
 }
