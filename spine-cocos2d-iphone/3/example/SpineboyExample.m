@@ -64,7 +64,7 @@
     sprite.position = ccp(size.width / 2, 200);
     [self addChild:sprite];
 
-//	[skeletonNode setAnimationForTrack:0 name:@"hand_wave" loop:YES];
+	[skeletonNode setAnimationForTrack:0 name:@"hand_wave" loop:YES];
 //	[skeletonNode setAnimationForTrack:0 name:@"idle" loop:YES];
 //	[skeletonNode setAnimationForTrack:1 name:@"antenna_glow" loop:YES];
 

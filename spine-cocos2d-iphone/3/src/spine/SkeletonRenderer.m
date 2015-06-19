@@ -284,26 +284,26 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                         float distV2V3 = ccpDistance(ccp(v2.position.x, v2.position.y), ccp(v3.position.x, v3.position.y));
                         float distV1V3 = ccpDistance(ccp(v1.position.x, v1.position.y), ccp(v3.position.x, v3.position.y));
 
-                        if(distV1V2 == distV2V3 && distV1V2 == distV1V3) {
-                            NSLog(@"Equilatral triangle");
-                        }
-                        else if(distV1V2 == distV2V3 || distV1V2 == distV1V3 || distV2V3 == distV1V3) {
-                            NSLog(@"ISO triangle");
-                        }
 //                        if(distV1V2 >= distV2V3 && distV1V2 >= distV1V3) {
-                            v4 = [self buildV4: v1 v2: v2 v3: v3];
-                        [self renderCyclic:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
+//                            v4 = [self buildV4: v1 v2: v2 v3: v3];
+//                        [self renderCyclic:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
 
 //                        }
 
 //                        else if(distV2V3 >= distV1V2 && distV2V3 >= distV1V3) {
-                            v4 = [self buildV4: v2 v2: v3 v3: v1];
-                        [self renderCyclic:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
+//                            v4 = [self buildV4: v2 v2: v3 v3: v1];
+//                        [self renderCyclic:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
 //                        }
 
 //                        else {
-                            v4 = [self buildV4: v1 v2: v3 v3: v2];
-                        [self renderCyclic:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
+                            v4 = [self buildMinV4: v1 v2: v3 v3: v2];
+                        [self renderBL:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
+                            v4 = [self buildMaxV4: v1 v2: v3 v3: v2];
+                        [self renderTR:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
+                            v4 = [self buildMinMaxV4: v1 v2: v3 v3: v2];
+                        [self renderTL:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
+                            v4 = [self buildMaxMinV4: v1 v2: v3 v3: v2];
+                        [self renderBR:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
 //                        }
 
 //                        [self renderCyclic:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
@@ -423,31 +423,67 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 }
 
 - (void)renderCyclic:(CCRenderer *)renderer transform:(union _GLKMatrix4 const *)transform triangles:(int const *)triangles slot:(spSlot *)slot vertexArray:(CCVertex[])vertexArray j:(int)j v1:(CCVertex *)v1 v2:(CCVertex *)v2 v3:(CCVertex *)v3 v4:(CCVertex *)v4 {
-    _verts.bl = (*v1);
-    _verts.tl = (*v2);
-    _verts.tr = (*v3);
-    _verts.br = (*v4);
+//    _verts.bl = (*v1);
+//    _verts.tl = (*v2);
+//    _verts.tr = (*v3);
+//    _verts.br = (*v4);
+//
+//    [self renderStuff:renderer transform:transform slot:slot j:j vertexArray:vertexArray triangles:triangles];
+
+//    _verts.bl = (*v4);
+//    _verts.tl = (*v1);
+//    _verts.tr = (*v2);
+//    _verts.br = (*v3);
+//
+//    [self renderStuff:renderer transform:transform slot:slot j:j vertexArray:vertexArray triangles:triangles];
+//
+//    _verts.bl = (*v3);
+//    _verts.tl = (*v4);
+//    _verts.tr = (*v1);
+//    _verts.br = (*v2);
+//
+//    [self renderStuff:renderer transform:transform slot:slot j:j vertexArray:vertexArray triangles:triangles];
+//
+    _verts.bl = (*v2);
+    _verts.tl = (*v3);
+    _verts.tr = (*v4);
+    _verts.br = (*v1);
 
     [self renderStuff:renderer transform:transform slot:slot j:j vertexArray:vertexArray triangles:triangles];
+}
 
+- (void)renderBL:(CCRenderer *)renderer transform:(union _GLKMatrix4 const *)transform triangles:(int const *)triangles slot:(spSlot *)slot vertexArray:(CCVertex[])vertexArray j:(int)j v1:(CCVertex *)v1 v2:(CCVertex *)v2 v3:(CCVertex *)v3 v4:(CCVertex *)v4 {
     _verts.bl = (*v4);
     _verts.tl = (*v1);
     _verts.tr = (*v2);
     _verts.br = (*v3);
 
     [self renderStuff:renderer transform:transform slot:slot j:j vertexArray:vertexArray triangles:triangles];
+}
 
-    _verts.bl = (*v3);
+- (void)renderTR:(CCRenderer *)renderer transform:(union _GLKMatrix4 const *)transform triangles:(int const *)triangles slot:(spSlot *)slot vertexArray:(CCVertex[])vertexArray j:(int)j v1:(CCVertex *)v1 v2:(CCVertex *)v2 v3:(CCVertex *)v3 v4:(CCVertex *)v4 {
+    _verts.tr = (*v4);
+    _verts.br = (*v1);
+    _verts.bl = (*v2);
+    _verts.tl = (*v3);
+
+    [self renderStuff:renderer transform:transform slot:slot j:j vertexArray:vertexArray triangles:triangles];
+}
+
+- (void)renderTL:(CCRenderer *)renderer transform:(union _GLKMatrix4 const *)transform triangles:(int const *)triangles slot:(spSlot *)slot vertexArray:(CCVertex[])vertexArray j:(int)j v1:(CCVertex *)v1 v2:(CCVertex *)v2 v3:(CCVertex *)v3 v4:(CCVertex *)v4 {
     _verts.tl = (*v4);
     _verts.tr = (*v1);
     _verts.br = (*v2);
+    _verts.bl = (*v3);
 
     [self renderStuff:renderer transform:transform slot:slot j:j vertexArray:vertexArray triangles:triangles];
+}
 
-    _verts.bl = (*v2);
-    _verts.tl = (*v3);
-    _verts.tr = (*v4);
-    _verts.br = (*v1);
+- (void)renderBR:(CCRenderer *)renderer transform:(union _GLKMatrix4 const *)transform triangles:(int const *)triangles slot:(spSlot *)slot vertexArray:(CCVertex[])vertexArray j:(int)j v1:(CCVertex *)v1 v2:(CCVertex *)v2 v3:(CCVertex *)v3 v4:(CCVertex *)v4 {
+    _verts.br = (*v4);
+    _verts.bl = (*v1);
+    _verts.tl = (*v2);
+    _verts.tr = (*v3);
 
     [self renderStuff:renderer transform:transform slot:slot j:j vertexArray:vertexArray triangles:triangles];
 }
@@ -502,6 +538,70 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
     result.color = v1.color;
     result.texCoord1 = GLKVector2Make(v3.texCoord1.x + (midTPoint.x - v3.texCoord1.x) * 2,
             v3.texCoord1.y + (midTPoint.y - v3.texCoord1.y) * 2);
+    result.texCoord2 = result.texCoord1;
+    return result;
+}
+
+- (CCVertex)buildMinV4:(CCVertex)v1 v2:(CCVertex)v2 v3:(CCVertex)v3 {
+    CCVertex result;
+    result.position = GLKVector4Make(
+            MIN(v1.position.x,v2.position.x),
+            MIN(v1.position.y,v2.position.y),
+            0.0, 1.0);
+
+    result.color = v1.color;
+    result.texCoord1 = GLKVector2Make(
+            MIN(v1.texCoord1.x,v2.texCoord1.x),
+            MIN(v1.texCoord1.y,v2.texCoord1.y)
+    );
+    result.texCoord2 = result.texCoord1;
+    return result;
+}
+
+- (CCVertex)buildMaxV4:(CCVertex)v1 v2:(CCVertex)v2 v3:(CCVertex)v3 {
+    CCVertex result;
+    result.position = GLKVector4Make(
+            MAX(v1.position.x,v2.position.x),
+            MAX(v1.position.y,v2.position.y),
+            0.0, 1.0);
+
+    result.color = v1.color;
+    result.texCoord1 = GLKVector2Make(
+            MAX(v1.texCoord1.x,v2.texCoord1.x),
+            MAX(v1.texCoord1.y,v2.texCoord1.y)
+    );
+    result.texCoord2 = result.texCoord1;
+    return result;
+}
+
+- (CCVertex)buildMinMaxV4:(CCVertex)v1 v2:(CCVertex)v2 v3:(CCVertex)v3 {
+    CCVertex result;
+    result.position = GLKVector4Make(
+            MIN(v1.position.x,v2.position.x),
+            MAX(v1.position.y,v2.position.y),
+            0.0, 1.0);
+
+    result.color = v1.color;
+    result.texCoord1 = GLKVector2Make(
+            MIN(v1.texCoord1.x,v2.texCoord1.x),
+            MAX(v1.texCoord1.y,v2.texCoord1.y)
+    );
+    result.texCoord2 = result.texCoord1;
+    return result;
+}
+
+- (CCVertex)buildMaxMinV4:(CCVertex)v1 v2:(CCVertex)v2 v3:(CCVertex)v3 {
+    CCVertex result;
+    result.position = GLKVector4Make(
+            MAX(v1.position.x,v2.position.x),
+            MIN(v1.position.y,v2.position.y),
+            0.0, 1.0);
+
+    result.color = v1.color;
+    result.texCoord1 = GLKVector2Make(
+            MAX(v1.texCoord1.x,v2.texCoord1.x),
+            MIN(v1.texCoord1.y,v2.texCoord1.y)
+    );
     result.texCoord2 = result.texCoord1;
     return result;
 }
