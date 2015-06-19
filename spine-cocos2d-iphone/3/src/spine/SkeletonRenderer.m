@@ -257,7 +257,7 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                     currentIndex++;
                     vertexArray[currentIndex] = vertex;
 
-//                    CCRenderBufferSetVertex(buffer, i, CCVertexApplyTransform(vertex, transform));
+                    CCRenderBufferSetVertex(buffer, i, CCVertexApplyTransform(vertex, transform));
 //                    if(!self.effect) {
 //                        CCRenderBufferSetVertex(buffer, i, CCVertexApplyTransform(vertex, transform));
 //                    }
@@ -269,16 +269,16 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                     }
                 }
                 else {
-                    for (int j = 0; j * 3 < trianglesCount; ++j) {
-                        CCRenderBufferSetTriangle(buffer, j, triangles[j * 3], triangles[j * 3 + 1], triangles[j * 3 + 2]);
-                    }
+//                    for (int j = 0; j * 3 < trianglesCount; ++j) {
+//                        CCRenderBufferSetTriangle(buffer, j, triangles[j * 3], triangles[j * 3 + 1], triangles[j * 3 + 2]);
+//                    }
                     int triCount = MIN(trianglesCount, 9);
                     for (int j = 0; j * 3 < trianglesCount; ++j) {
 
                         CCVertex v1 = vertexArray[triangles[j * 3]];
                         CCVertex v2 = vertexArray[triangles[j * 3 + 1]];
                         CCVertex v3 = vertexArray[triangles[j * 3 + 2]];
-                        CCVertex v4;
+                        CCVertex v4 = vertexArray[triangles[j * 3 + 1]];
 
                         float distV1V2 = ccpDistance(ccp(v1.position.x, v1.position.y), ccp(v2.position.x, v2.position.y));
                         float distV2V3 = ccpDistance(ccp(v2.position.x, v2.position.y), ccp(v3.position.x, v3.position.y));
@@ -300,9 +300,9 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                         [self renderBL:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
                             v4 = [self buildMaxV4: v1 v2: v3 v3: v2];
                         [self renderTR:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
-                            v4 = [self buildMinMaxV4: v1 v2: v3 v3: v2];
+//                            v4 = [self buildMinMaxV4: v1 v2: v3 v3: v2];
                         [self renderTL:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
-                            v4 = [self buildMaxMinV4: v1 v2: v3 v3: v2];
+//                            v4 = [self buildMaxMinV4: v1 v2: v3 v3: v2];
                         [self renderBR:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
 //                        }
 
