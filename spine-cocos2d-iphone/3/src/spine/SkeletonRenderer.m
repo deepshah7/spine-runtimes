@@ -303,7 +303,7 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 //                            v4 = [self buildMinMaxV4: v1 v2: v3 v3: v2];
                         [self renderTL:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
 //                            v4 = [self buildMaxMinV4: v1 v2: v3 v3: v2];
-                        [self renderBR:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
+//                        [self renderBR:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
 //                        }
 
 //                        [self renderCyclic:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
