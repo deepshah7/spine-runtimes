@@ -239,7 +239,7 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 				CCRenderBuffer buffer =
                         [renderer enqueueTriangles:(trianglesCount / 3) andVertexes:verticesCount
                                                          withState:self.renderState globalSortOrder:0];
-                CCVertex vertexArray[verticesCount / 2];
+                CCVertex vertexArray[verticesCount / 2 + (verticesCount % 2 == 0? 0 : 1)];
                 int currentIndex = -1;
 				for (int i = 0; i * 2 < verticesCount; ++i) {
 					CCVertex vertex;
@@ -248,51 +248,21 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 					vertex.texCoord1 = GLKVector2Make(uvs[i * 2], 1 - uvs[i * 2 + 1]);
 					vertex.texCoord2 = GLKVector2Make(uvs[i * 2], 1 - uvs[i * 2 + 1]);
 
-//                    if(slot->attachment->type == SP_ATTACHMENT_SKINNED_MESH) {
-                        currentIndex++;
-                        vertexArray[currentIndex] = vertex;
-//                    }
+                    currentIndex++;
+                    vertexArray[currentIndex] = vertex;
 
-                    if(slot->attachment->type == SP_ATTACHMENT_REGION) {
-                        if(i % 4 == 0) {
-                            _verts.bl = vertex;
-                        }
-                        if(i % 4 == 1) {
-                            _verts.tl = vertex;
-                        }
-                        if(i % 4 == 2) {
-                            _verts.tr = vertex;
-                        }
-                        if(i % 4 == 3) {
-                            _verts.br = vertex;
-                        }
-                    }
                     if(!self.effect) {
                         CCRenderBufferSetVertex(buffer, i, CCVertexApplyTransform(vertex, transform));
-                    } else if (slot->attachment->type == SP_ATTACHMENT_REGION && i % 4 == 3) {
-
-                        _effectRenderer.contentSize = self.boundingBox.size;
-
-                        CCEffectPrepareResult prepResult = [self.effect prepareForRenderingWithSprite:self];
-                        NSAssert(prepResult.status == CCEffectPrepareSuccess, @"Effect preparation failed.");
-
-                        if (prepResult.changes & CCEffectPrepareUniformsChanged)
-                        {
-                            // Preparing an effect for rendering can modify its uniforms
-                            // dictionary which means we need to reinitialize our copy of the
-                            // uniforms.
-                            [self updateShaderUniformsFromEffect];
-                        }
-                        [_effectRenderer drawSprite:self
-                                         withEffect:self.effect uniforms:self.shaderUniforms
-                                           renderer:renderer
-                                          transform:transform];
                     }
 				}
 
-                if (/*!self.effect && */ slot->attachment->type == SP_ATTACHMENT_SKINNED_MESH) {
+                if(!self.effect) {
                     for (int j = 0; j * 3 < trianglesCount; ++j) {
-//                        CCRenderBufferSetTriangle(buffer, j, triangles[j * 3], triangles[j * 3 + 1], triangles[j * 3 + 2]);
+                        CCRenderBufferSetTriangle(buffer, j, triangles[j * 3], triangles[j * 3 + 1], triangles[j * 3 + 2]);
+                    }
+                }
+                else {
+                    for (int j = 0; j * 3 < trianglesCount; ++j) {
 
                         _verts.tr = vertexArray[triangles[j * 3]];
                         _verts.tl = vertexArray[triangles[j * 3 + 1]];

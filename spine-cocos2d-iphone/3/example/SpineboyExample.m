@@ -46,7 +46,7 @@
 	self = [super init];
 	if (!self) return nil;
 
-    NSString *characterName = @"hypno";
+    NSString *characterName = @"goldanic";
     NSString *jsonFileName = [NSString stringWithFormat:@"%@.json", characterName];
     NSString *atlasFileName = [NSString stringWithFormat:@"%@.atlas", characterName];
     NSString *mainFileFileName = [NSString stringWithFormat:@"%@.png", characterName];
@@ -64,7 +64,8 @@
     sprite.position = ccp(size.width / 2, 200);
     [self addChild:sprite];
 
-	[skeletonNode setAnimationForTrack:0 name:@"hand_wave" loop:YES];
+//	[skeletonNode setAnimationForTrack:0 name:@"hand_wave" loop:YES];
+	[skeletonNode setAnimationForTrack:0 name:@"idle" loop:YES];
 //	[skeletonNode setAnimationForTrack:1 name:@"antenna_glow" loop:YES];
 
     [self addLights:size];
