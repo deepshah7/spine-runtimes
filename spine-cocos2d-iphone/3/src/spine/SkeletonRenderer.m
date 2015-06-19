@@ -276,9 +276,9 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                         CCVertex v3 = vertexArray[triangles[j * 3 + 2]];
                         CCVertex v4;
 
-                        float distV1V2 = ccpDistance(ccp(v1.texCoord1.x, v1.texCoord1.y), ccp(v2.texCoord1.x, v2.texCoord1.y));
-                        float distV2V3 = ccpDistance(ccp(v2.texCoord1.x, v2.texCoord1.y), ccp(v3.texCoord1.x, v3.texCoord1.y));
-                        float distV1V3 = ccpDistance(ccp(v1.texCoord1.x, v1.texCoord1.y), ccp(v3.texCoord1.x, v3.texCoord1.y));
+                        float distV1V2 = ccpDistance(ccp(v1.position.x, v1.position.y), ccp(v2.position.x, v2.position.y));
+                        float distV2V3 = ccpDistance(ccp(v2.position.x, v2.position.y), ccp(v3.position.x, v3.position.y));
+                        float distV1V3 = ccpDistance(ccp(v1.position.x, v1.position.y), ccp(v3.position.x, v3.position.y));
 
                         if(distV1V2 >= distV2V3 && distV1V2 >= distV1V3) {
                             v4 = [self buildV4: v1 v2: v2 v3: v3];
@@ -292,6 +292,14 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                             v4 = [self buildV4: v1 v2: v3 v3: v2];
                         }
 
+//                        _verts.bl = v1;
+//                        _verts.tl = v2;
+//                        _verts.tr = v3;
+//                        _verts.br = v4;
+//
+//                        [self renderStuff:renderer transform:transform slot:slot j:j];
+
+
                         CCVertex ySorted[4];
                         ySorted[0] = v1; ySorted[1] = v2; ySorted[2] = v3, ySorted[3] = v4;
 
@@ -301,11 +309,12 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 
                         for (int k = 0; k < 4; ++k) {
                             for (int l = k+1; l < 4; ++l) {
-                                if(ySorted[k].texCoord1.y > ySorted[l].texCoord1.y) {
+                                if(ySorted[k].position.y > ySorted[l].position.y) {
                                     CCVertex temp = ySorted[k];
                                     ySorted[k] = ySorted[l];
                                     ySorted[l] = temp;
-                                } else if(ySorted[k].texCoord1.y == ySorted[l].texCoord1.y && ySorted[k].texCoord1.x > ySorted[l].texCoord1.x) {
+                                } else if(ySorted[k].position.y == ySorted[l].position.y
+                                        && ySorted[k].position.x > ySorted[l].position.x) {
                                     NSLog(@"sdfkfjklslkf#@@@@@@@@@@@@@@Y same X sorting!");
                                     CCVertex temp = ySorted[k];
                                     ySorted[k] = ySorted[l];
@@ -316,12 +325,13 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 
                         for (int k = 0; k < 4; ++k) {
                             for (int l = k+1; l < 4; ++l) {
-                                if(xSorted[k].texCoord1.x > xSorted[l].texCoord1.x) {
+                                if(xSorted[k].position.x > xSorted[l].position.x) {
                                     CCVertex temp = xSorted[k];
                                     xSorted[k] = xSorted[l];
                                     xSorted[l] = temp;
-                                } else if(xSorted[k].texCoord1.x == xSorted[l].texCoord1.x && xSorted[k].texCoord1.y > xSorted[l].texCoord1.y) {
-                                    NSLog(@"sdfkfjklslkf#@@@@@@@@@@@@@@X same Y sorting!");
+                                } else if(xSorted[k].position.x == xSorted[l].position.x
+                                        && xSorted[k].position.y > xSorted[l].position.y) {
+                                    NSLog(@"######################X same Y sorting!");
                                     CCVertex temp = xSorted[k];
                                     xSorted[k] = xSorted[l];
                                     xSorted[l] = temp;
@@ -329,9 +339,39 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                             }
                         }
 
-                        [self renderStuff:renderer transform:transform slot:slot j:j ySorted:ySorted];
-                        [self renderStuff:renderer transform:transform slot:slot j:j ySorted:xSorted];
+                        if(ySorted[0].position.x < ySorted[1].position.x) {
+                            _verts.bl = ySorted[0];
+                            _verts.br = ySorted[1];
+                        } else {
+                            _verts.bl = ySorted[1];
+                            _verts.br = ySorted[0];
+                        }
+                        if(ySorted[2].position.x < ySorted[3].position.x) {
+                            _verts.tl = ySorted[2];
+                            _verts.tr = ySorted[3];
+                        } else {
+                            _verts.tl = ySorted[3];
+                            _verts.tr = ySorted[2];
+                        }
 
+                        [self renderStuff:renderer transform:transform slot:slot j:j];
+
+                        if(xSorted[0].position.y < xSorted[1].position.y) {
+                            _verts.bl = xSorted[0];
+                            _verts.tl = xSorted[1];
+                        } else {
+                            _verts.bl = xSorted[1];
+                            _verts.tl = xSorted[0];
+                        }
+                        if(xSorted[2].position.y < xSorted[3].position.y) {
+                            _verts.br = xSorted[2];
+                            _verts.tr = xSorted[3];
+                        } else {
+                            _verts.br = xSorted[3];
+                            _verts.tr = xSorted[2];
+                        }
+
+                        [self renderStuff:renderer transform:transform slot:slot j:j];
                     }
                 }
 			}
@@ -372,21 +412,7 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 	}
 }
 
-- (void)renderStuff:(CCRenderer *)renderer transform:(union _GLKMatrix4 const *)transform slot:(spSlot *)slot j:(int)j ySorted:(CCVertex[4])ySorted {
-    if(ySorted[0].texCoord1.x < ySorted[1].texCoord1.x) {
-                            _verts.bl = ySorted[0];
-                            _verts.br = ySorted[1];
-                        } else {
-                            _verts.bl = ySorted[1];
-                            _verts.br = ySorted[0];
-                        }
-    if(ySorted[2].texCoord1.x < ySorted[3].texCoord1.x) {
-                            _verts.tl = ySorted[2];
-                            _verts.tr = ySorted[3];
-                        } else {
-                            _verts.tl = ySorted[3];
-                            _verts.tr = ySorted[2];
-                        }
+- (void)renderStuff:(CCRenderer *)renderer transform:(union _GLKMatrix4 const *)transform slot:(spSlot *)slot j:(int)j {
 
     if(!isDone) {
                             NSLog(@"Slot->Attachment %s, TriangleNumber: %d", slot->attachment->name, j);
