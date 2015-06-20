@@ -272,17 +272,140 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 //                    for (int j = 0; j * 3 < trianglesCount; ++j) {
 //                        CCRenderBufferSetTriangle(buffer, j, triangles[j * 3], triangles[j * 3 + 1], triangles[j * 3 + 2]);
 //                    }
-                    int triCount = MIN(trianglesCount, 9);
                     for (int j = 0; j * 3 < trianglesCount; ++j) {
 
                         CCVertex v1 = vertexArray[triangles[j * 3]];
                         CCVertex v2 = vertexArray[triangles[j * 3 + 1]];
                         CCVertex v3 = vertexArray[triangles[j * 3 + 2]];
-                        CCVertex v4 = vertexArray[triangles[j * 3 + 1]];
+                        CCVertex v4 = vertexArray[triangles[j * 3 + 2]];
+                        BOOL isSet = NO;
+                        for (int k = 0; k < trianglesCount; k+=3) {
+                            if(k == 3*j) continue;
+                            if(
+                                    (triangles[k] == triangles[j * 3]
+                                    || triangles[k] == triangles[j * 3 + 1]
+                                    || triangles[k] == triangles[j * 3 + 2])
+                                &&
+                                    (triangles[k + 1] == triangles[j * 3]
+                                    || triangles[k + 1] == triangles[j * 3 + 1]
+                                    || triangles[k + 1] == triangles[j * 3 + 2])
 
-                        float distV1V2 = ccpDistance(ccp(v1.position.x, v1.position.y), ccp(v2.position.x, v2.position.y));
-                        float distV2V3 = ccpDistance(ccp(v2.position.x, v2.position.y), ccp(v3.position.x, v3.position.y));
-                        float distV1V3 = ccpDistance(ccp(v1.position.x, v1.position.y), ccp(v3.position.x, v3.position.y));
+                                    ) {
+                                v4 = vertexArray[triangles[k + 2]];
+                                isSet = YES;
+                                break;
+                            }
+                            if(
+                                    (triangles[k + 2] == triangles[j * 3]
+                                    || triangles[k + 2] == triangles[j * 3 + 1]
+                                    || triangles[k + 2] == triangles[j * 3 + 2])
+                                &&
+                                    (triangles[k + 1] == triangles[j * 3]
+                                    || triangles[k + 1] == triangles[j * 3 + 1]
+                                    || triangles[k + 1] == triangles[j * 3 + 2])
+
+                                    ) {
+                                v4 = vertexArray[triangles[k]];
+                                isSet = YES;
+                                break;
+                            }
+                            if(
+                                    (triangles[k + 2] == triangles[j * 3]
+                                    || triangles[k + 2] == triangles[j * 3 + 1]
+                                    || triangles[k + 2] == triangles[j * 3 + 2])
+                                &&
+                                    (triangles[k] == triangles[j * 3]
+                                    || triangles[k] == triangles[j * 3 + 1]
+                                    || triangles[k] == triangles[j * 3 + 2])
+
+                                    ) {
+                                v4 = vertexArray[triangles[k+1]];
+                                isSet = YES;
+                                break;
+                            }
+                        }
+                        if(!isSet) {
+                            NSLog(@"Not found the vertex!");
+                        }
+                        if(isSet) {
+                            CCVertex ySorted[4];
+                            ySorted[0] = v1; ySorted[1] = v2; ySorted[2] = v3, ySorted[3] = v4;
+
+                            CCVertex xSorted[4];
+                            xSorted[0] = v1; xSorted[1] = v2; xSorted[2] = v3, xSorted[3] = v4;
+
+
+                            for (int k = 0; k < 4; ++k) {
+                                for (int l = k+1; l < 4; ++l) {
+                                    if(ySorted[k].position.y > ySorted[l].position.y) {
+                                        CCVertex temp = ySorted[k];
+                                        ySorted[k] = ySorted[l];
+                                        ySorted[l] = temp;
+                                    } else if(ySorted[k].position.y == ySorted[l].position.y
+                                            && ySorted[k].position.x > ySorted[l].position.x) {
+                                        NSLog(@"sdfkfjklslkf#@@@@@@@@@@@@@@Y same X sorting!");
+                                        CCVertex temp = ySorted[k];
+                                        ySorted[k] = ySorted[l];
+                                        ySorted[l] = temp;
+                                    }
+                                }
+                            }
+
+                            for (int k = 0; k < 4; ++k) {
+                                for (int l = k+1; l < 4; ++l) {
+                                    if(xSorted[k].position.x > xSorted[l].position.x) {
+                                        CCVertex temp = xSorted[k];
+                                        xSorted[k] = xSorted[l];
+                                        xSorted[l] = temp;
+                                    } else if(xSorted[k].position.x == xSorted[l].position.x
+                                            && xSorted[k].position.y > xSorted[l].position.y) {
+                                        NSLog(@"######################X same Y sorting!");
+                                        CCVertex temp = xSorted[k];
+                                        xSorted[k] = xSorted[l];
+                                        xSorted[l] = temp;
+                                    }
+                                }
+                            }
+
+                            if(ySorted[0].position.x < ySorted[1].position.x) {
+                                _verts.bl = ySorted[0];
+                                _verts.br = ySorted[1];
+                            } else {
+                                _verts.bl = ySorted[1];
+                                _verts.br = ySorted[0];
+                            }
+                            if(ySorted[2].position.x < ySorted[3].position.x) {
+                                _verts.tl = ySorted[2];
+                                _verts.tr = ySorted[3];
+                            } else {
+                                _verts.tl = ySorted[3];
+                                _verts.tr = ySorted[2];
+                            }
+
+                            [self renderStuff:renderer transform:transform slot:slot j:j vertexArray:vertexArray triangles:triangles];
+
+                            if(xSorted[0].position.y < xSorted[1].position.y) {
+                                _verts.bl = xSorted[0];
+                                _verts.tl = xSorted[1];
+                            } else {
+                                _verts.bl = xSorted[1];
+                                _verts.tl = xSorted[0];
+                            }
+                            if(xSorted[2].position.y < xSorted[3].position.y) {
+                                _verts.br = xSorted[2];
+                                _verts.tr = xSorted[3];
+                            } else {
+                                _verts.br = xSorted[3];
+                                _verts.tr = xSorted[2];
+                            }
+
+                            [self renderStuff:renderer transform:transform slot:slot j:j vertexArray:vertexArray triangles:triangles];
+
+                        }
+
+//                        float distV1V2 = ccpDistance(ccp(v1.position.x, v1.position.y), ccp(v2.position.x, v2.position.y));
+//                        float distV2V3 = ccpDistance(ccp(v2.position.x, v2.position.y), ccp(v3.position.x, v3.position.y));
+//                        float distV1V3 = ccpDistance(ccp(v1.position.x, v1.position.y), ccp(v3.position.x, v3.position.y));
 
 //                        if(distV1V2 >= distV2V3 && distV1V2 >= distV1V3) {
 //                            v4 = [self buildV4: v1 v2: v2 v3: v3];
@@ -296,12 +419,19 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 //                        }
 
 //                        else {
-                            v4 = [self buildMinV4: v1 v2: v3 v3: v2];
-                        [self renderBL:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
-                            v4 = [self buildMaxV4: v1 v2: v3 v3: v2];
-                        [self renderTR:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
-//                            v4 = [self buildMinMaxV4: v1 v2: v3 v3: v2];
-                        [self renderTL:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
+//                            v4 = [self buildMaxV4: v1 v2: v3 v3: v2];
+//                        [self renderTR:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
+//                            v4 = [self buildMaxV4: v1 v2: v2 v3: v3];
+//                        [self renderTR:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v3 v3:&v2 v4:&v4];
+//                            v4 = [self buildMinV4: v1 v2: v3 v3: v2];
+//                        [self renderBL:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
+//                            v4 = [self buildMinV4: v1 v2: v2 v3: v3];
+//                        [self renderBL:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v3 v3:&v2 v4:&v4];
+//                        [self renderTR:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
+//                            v4 = [self buildMaxV4: v1 v2: v3 v3: v2];
+//                        [self renderTL:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
+//                            v4 = [self buildMaxMinV4: v1 v2: v3 v3: v2];
+//                        [self renderBR:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
 //                            v4 = [self buildMaxMinV4: v1 v2: v3 v3: v2];
 //                        [self renderBR:renderer transform:transform triangles:triangles slot:slot vertexArray:vertexArray j:j v1:&v1 v2:&v2 v3:&v3 v4:&v4];
 //                        }
@@ -490,7 +620,7 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 
 - (void)renderStuff:(CCRenderer *)renderer transform:(union _GLKMatrix4 const *)transform slot:(spSlot *)slot j:(int)j vertexArray:(CCVertex[])array triangles:(int const *)triangles {
 
-    if(!isDone) {
+    if(NO && !isDone) {
                             NSLog(@"Slot->Attachment %s, TriangleNumber: %d", slot->attachment->name, j);
                             NSLog(@"BL: (%f, %f), BR: (%f, %f), TR: (%f, %f), TL: (%f, %f)", _verts.bl.position.x, _verts.bl.position.y
                                     , _verts.br.position.x, _verts.br.position.y

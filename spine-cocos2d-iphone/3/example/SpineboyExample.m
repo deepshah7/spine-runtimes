@@ -46,20 +46,23 @@
 	self = [super init];
 	if (!self) return nil;
 
-    NSString *characterName = @"hypno";
+//    NSString *characterName = @"goblins-mesh";
+    NSString *characterName = @"goblins-mesh";
     NSString *jsonFileName = [NSString stringWithFormat:@"%@.json", characterName];
     NSString *atlasFileName = [NSString stringWithFormat:@"%@.atlas", characterName];
     NSString *mainFileFileName = [NSString stringWithFormat:@"%@.png", characterName];
     NSString *normalFileName = [NSString stringWithFormat:@"%@_n.png", characterName];
     CGSize size = [[CCDirector sharedDirector] viewSize];
 
-	skeletonNode = [SkeletonAnimation skeletonWithFile:jsonFileName atlasFile:atlasFileName scale:0.6];
+	skeletonNode = [SkeletonAnimation skeletonWithFile:jsonFileName atlasFile:atlasFileName scale:1.0];
+	[skeletonNode setSkin:@"goblin"];
+//	[skeletonNode setAnimationForTrack:0 name:@"walk" loop:YES];
 
     CCSprite *sprite = [CCSprite spriteWithImageNamed:mainFileFileName];
-    CCSpriteFrame *normalMap = [CCSpriteFrame frameWithImageNamed:normalFileName];
-    CCSpriteFrame *normalMap1 = [CCSpriteFrame frameWithImageNamed:normalFileName];
+//    CCSpriteFrame *normalMap = [CCSpriteFrame frameWithImageNamed:normalFileName];
+//    CCSpriteFrame *normalMap1 = [CCSpriteFrame frameWithImageNamed:normalFileName];
 
-    sprite.normalMapSpriteFrame = normalMap1;
+//    sprite.normalMapSpriteFrame = normalMap1;
     sprite.effect = [CCEffectLighting effectWithGroups:@[@"g1"] specularColor:[CCColor whiteColor] shininess:1];
     sprite.position = ccp(size.width / 2, 200);
     [self addChild:sprite];
@@ -72,7 +75,7 @@
 
 //    skeletonNode.debugBones = YES;
 //    skeletonNode.debugSlots = YES;
-    skeletonNode.normalMapSpriteFrame = normalMap;
+//    skeletonNode.normalMapSpriteFrame = normalMap;
 
 	[skeletonNode setPosition:ccp(size.width / 2, size.height / 2)];
     [skeletonNode updateWorldTransform];
