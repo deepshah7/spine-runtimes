@@ -46,7 +46,7 @@
 	self = [super init];
 	if (!self) return nil;
 
-//    NSString *characterName = @"goblins-mesh";
+//    NSString *characterName = @"hypno";
     NSString *characterName = @"goblins-mesh";
     NSString *jsonFileName = [NSString stringWithFormat:@"%@.json", characterName];
     NSString *atlasFileName = [NSString stringWithFormat:@"%@.atlas", characterName];
@@ -55,6 +55,7 @@
     CGSize size = [[CCDirector sharedDirector] viewSize];
 
 	skeletonNode = [SkeletonAnimation skeletonWithFile:jsonFileName atlasFile:atlasFileName scale:1.0];
+//    SkeletonAnimation *skeletonNode1 = [SkeletonAnimation skeletonWithFile:jsonFileName atlasFile:atlasFileName scale:1.0];
 	[skeletonNode setSkin:@"goblin"];
 //	[skeletonNode setAnimationForTrack:0 name:@"walk" loop:YES];
 
@@ -83,6 +84,12 @@
     skeletonNode.effect = [CCEffectLighting effectWithGroups:@[@"g1"] specularColor:[CCColor whiteColor] shininess:1];
     skeletonNode.visible = YES;
     [self addChild:skeletonNode];
+
+//	[skeletonNode1 setPosition:ccp(size.width / 4, size.height / 2)];
+//    [skeletonNode1 updateWorldTransform];
+
+//    skeletonNode1.visible = YES;
+//    [self addChild:skeletonNode1];
 
     self.userInteractionEnabled = YES;
     self.contentSize = size;
