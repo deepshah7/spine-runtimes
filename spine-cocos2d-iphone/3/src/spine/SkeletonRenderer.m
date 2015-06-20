@@ -282,6 +282,7 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                         CCVertex v1 = vertexArray[triangles[j * 3]];
                         CCVertex v2 = vertexArray[triangles[j * 3 + 1]];
                         CCVertex v3 = vertexArray[triangles[j * 3 + 2]];
+                        
                         if (j==0) {
                             _verts.br = v1;
                             _verts.bl = v2;
