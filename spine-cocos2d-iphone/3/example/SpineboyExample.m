@@ -46,29 +46,31 @@
 	self = [super init];
 	if (!self) return nil;
 
-//    NSString *characterName = @"hypno";
-    NSString *characterName = @"goblins-mesh";
+    NSString *characterName = @"hypno";
+//    NSString *characterName = @"goblins-mesh";
     NSString *jsonFileName = [NSString stringWithFormat:@"%@.json", characterName];
     NSString *atlasFileName = [NSString stringWithFormat:@"%@.atlas", characterName];
     NSString *mainFileFileName = [NSString stringWithFormat:@"%@.png", characterName];
     NSString *normalFileName = [NSString stringWithFormat:@"%@_n.png", characterName];
     CGSize size = [[CCDirector sharedDirector] viewSize];
 
-	skeletonNode = [SkeletonAnimation skeletonWithFile:jsonFileName atlasFile:atlasFileName scale:1.0];
-//    SkeletonAnimation *skeletonNode1 = [SkeletonAnimation skeletonWithFile:jsonFileName atlasFile:atlasFileName scale:1.0];
-	[skeletonNode setSkin:@"goblin"];
+	skeletonNode = [SkeletonAnimation skeletonWithFile:jsonFileName atlasFile:atlasFileName scale:0.6];
+    SkeletonAnimation *skeletonNode1 = [SkeletonAnimation skeletonWithFile:jsonFileName atlasFile:atlasFileName scale:0.6];
+//	[skeletonNode setSkin:@"goblin"];
 //	[skeletonNode setAnimationForTrack:0 name:@"walk" loop:YES];
 
     CCSprite *sprite = [CCSprite spriteWithImageNamed:mainFileFileName];
-//    CCSpriteFrame *normalMap = [CCSpriteFrame frameWithImageNamed:normalFileName];
-//    CCSpriteFrame *normalMap1 = [CCSpriteFrame frameWithImageNamed:normalFileName];
+    CCSpriteFrame *normalMap = [CCSpriteFrame frameWithImageNamed:normalFileName];
+    CCSpriteFrame *normalMap1 = [CCSpriteFrame frameWithImageNamed:normalFileName];
 
-//    sprite.normalMapSpriteFrame = normalMap1;
+    skeletonNode.normalMapSpriteFrame = normalMap;
+    sprite.normalMapSpriteFrame = normalMap1;
     sprite.effect = [CCEffectLighting effectWithGroups:@[@"g1"] specularColor:[CCColor whiteColor] shininess:1];
     sprite.position = ccp(size.width / 2, 200);
     [self addChild:sprite];
 
-//	[skeletonNode setAnimationForTrack:0 name:@"hand_wave" loop:YES];
+	[skeletonNode setAnimationForTrack:0 name:@"hand_wave" loop:YES];
+	[skeletonNode1 setAnimationForTrack:0 name:@"hand_wave" loop:YES];
 //	[skeletonNode setAnimationForTrack:0 name:@"idle" loop:YES];
 //	[skeletonNode setAnimationForTrack:1 name:@"antenna_glow" loop:YES];
 
@@ -76,20 +78,19 @@
 
 //    skeletonNode.debugBones = YES;
 //    skeletonNode.debugSlots = YES;
-//    skeletonNode.normalMapSpriteFrame = normalMap;
 
-	[skeletonNode setPosition:ccp(size.width / 2, size.height / 2)];
+	[skeletonNode setPosition:ccp(3 * size.width / 4, size.height / 2)];
     [skeletonNode updateWorldTransform];
 
     skeletonNode.effect = [CCEffectLighting effectWithGroups:@[@"g1"] specularColor:[CCColor whiteColor] shininess:1];
     skeletonNode.visible = YES;
     [self addChild:skeletonNode];
 
-//	[skeletonNode1 setPosition:ccp(size.width / 4, size.height / 2)];
-//    [skeletonNode1 updateWorldTransform];
+	[skeletonNode1 setPosition:ccp(size.width / 4, size.height / 2)];
+    [skeletonNode1 updateWorldTransform];
 
-//    skeletonNode1.visible = YES;
-//    [self addChild:skeletonNode1];
+    skeletonNode1.visible = YES;
+    [self addChild:skeletonNode1];
 
     self.userInteractionEnabled = YES;
     self.contentSize = size;
@@ -99,7 +100,7 @@
 
 - (void)addLights:(CGSize)size {
     lightNode = [CCLightNode lightWithType:CCLightPoint groups:@[@"g1"]
-                         color:[CCColor whiteColor] intensity:0.8
+                             color:[CCColor whiteColor] intensity:0.8
                  specularColor:[CCColor greenColor] specularIntensity:0.4
                   ambientColor:[CCColor whiteColor] ambientIntensity:0.0];
 
