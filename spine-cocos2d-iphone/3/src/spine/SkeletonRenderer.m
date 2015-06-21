@@ -283,44 +283,6 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                         _triangleVertices.v1 = vertexArray[triangles[j * 3]];
                         _triangleVertices.v2 = vertexArray[triangles[j * 3 + 1]];
                         _triangleVertices.v3 = vertexArray[triangles[j * 3 + 2]];
-
-//                        if (j==0) {
-//                            _verts.br = v1;
-//                            _verts.bl = v2;
-////                            _verts.tl = v2;
-//                            _verts.tr = v3;
-//                        } else if(j == 1) {
-//                            _verts.br = v1;
-//                            _verts.bl = v2;
-////                            _verts.tl = v2;
-//                            _verts.tr = v3;
-//                        } else if(j == 2) {
-//                            _verts.bl = v1;
-//                            _verts.tr = v2;
-////                            _verts.bl = v3;
-//                            _verts.br = v3;
-//                        } else if(j == 3) {
-//                            _verts.br = v1;
-//                            _verts.bl = v2;
-//                            _verts.tr = v3;
-////                            _verts.tl = v3;
-//                        } else if(j == 4) {
-//                            _verts.tr = v1;
-//                            _verts.br = v2;
-//                            _verts.bl = v3;
-////                            _verts.tl = v3;
-//                        } else if(j == 5) {
-//                            _verts.bl = v1;
-//                            _verts.br = v2;
-//                            _verts.tr = v3;
-////                            _verts.bl = v3;
-//                        } else if(j == 6) {
-//                            _verts.br = v1;
-//                            _verts.bl = v2;
-////                            _verts.tl = v3;
-//                            _verts.tr = v3;
-//                        }
-
                         [self renderStuff:renderer transform:transform];
                     }
                 }
