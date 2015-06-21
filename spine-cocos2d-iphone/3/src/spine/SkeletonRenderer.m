@@ -258,9 +258,9 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                     vertexArray[currentIndex] = vertex;
 
                     CCRenderBufferSetVertex(buffer, i, CCVertexApplyTransform(vertex, transform));
-//                    if(!self.effect) {
-//                        CCRenderBufferSetVertex(buffer, i, CCVertexApplyTransform(vertex, transform));
-//                    }
+                    if(!self.effect) {
+                        CCRenderBufferSetVertex(buffer, i, CCVertexApplyTransform(vertex, transform));
+                    }
 				}
 
                 if(!self.effect) {
@@ -269,58 +269,59 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
                     }
                 }
                 else {
-//                    for (int j = 0; j * 3 < trianglesCount; ++j) {
-//                        CCRenderBufferSetTriangle(buffer, j, triangles[j * 3], triangles[j * 3 + 1], triangles[j * 3 + 2]);
-//                    }
                     for (int j = 0; j * 3 < trianglesCount; ++j) {
-                        if(![string isEqualToString:@"left upper leg"]) continue;
+//                        CCRenderBufferSetTriangle(buffer, j, triangles[j * 3], triangles[j * 3 + 1], triangles[j * 3 + 2]);
+                    }
+                    for (int j = 0; j * 3 < trianglesCount; ++j) {
+//                        if(![string isEqualToString:@"left upper leg"]) continue;
 
-                        if(j!= 0 && j != 1 && j!= 2 && j!= 3 && j!= 4 && j!= 5 && j!= 6 && [string isEqualToString:@"left upper leg"]) {
-                            NSLog(@"Debug");
-                            continue;
-                        }
-                        CCVertex v1 = vertexArray[triangles[j * 3]];
-                        CCVertex v2 = vertexArray[triangles[j * 3 + 1]];
-                        CCVertex v3 = vertexArray[triangles[j * 3 + 2]];
-                        
-                        if (j==0) {
-                            _verts.br = v1;
-                            _verts.bl = v2;
-//                            _verts.tl = v2;
-                            _verts.tr = v3;
-                        } else if(j == 1) {
-                            _verts.br = v1;
-                            _verts.bl = v2;
-//                            _verts.tl = v2;
-                            _verts.tr = v3;
-                        } else if(j == 2) {
-                            _verts.bl = v1;
-                            _verts.tr = v2;
-//                            _verts.bl = v3;
-                            _verts.br = v3;
-                        } else if(j == 3) {
-                            _verts.br = v1;
-                            _verts.bl = v2;
-                            _verts.tr = v3;
-//                            _verts.tl = v3;
-                        } else if(j == 4) {
-                            _verts.tr = v1;
-                            _verts.br = v2;
-                            _verts.bl = v3;
-//                            _verts.tl = v3;
-                        } else if(j == 5) {
-                            _verts.bl = v1;
-                            _verts.br = v2;
-                            _verts.tr = v3;
-//                            _verts.bl = v3;
-                        } else if(j == 6) {
-                            _verts.br = v1;
-                            _verts.bl = v2;
-//                            _verts.tl = v3;
-                            _verts.tr = v3;
-                        }
+//                        if(j!= 0 && j != 1 && j!= 2 && j!= 3 && j!= 4 && j!= 5 && j!= 6 && [string isEqualToString:@"left upper leg"]) {
+//                            NSLog(@"Debug");
+//                            continue;
+//                        }
+                        _renderTriangles = YES;
+                        _triangleVertices.v1 = vertexArray[triangles[j * 3]];
+                        _triangleVertices.v2 = vertexArray[triangles[j * 3 + 1]];
+                        _triangleVertices.v3 = vertexArray[triangles[j * 3 + 2]];
 
-                        [self renderStuff:renderer transform:transform slot:slot j:j vertexArray:vertexArray triangles:triangles];
+//                        if (j==0) {
+//                            _verts.br = v1;
+//                            _verts.bl = v2;
+////                            _verts.tl = v2;
+//                            _verts.tr = v3;
+//                        } else if(j == 1) {
+//                            _verts.br = v1;
+//                            _verts.bl = v2;
+////                            _verts.tl = v2;
+//                            _verts.tr = v3;
+//                        } else if(j == 2) {
+//                            _verts.bl = v1;
+//                            _verts.tr = v2;
+////                            _verts.bl = v3;
+//                            _verts.br = v3;
+//                        } else if(j == 3) {
+//                            _verts.br = v1;
+//                            _verts.bl = v2;
+//                            _verts.tr = v3;
+////                            _verts.tl = v3;
+//                        } else if(j == 4) {
+//                            _verts.tr = v1;
+//                            _verts.br = v2;
+//                            _verts.bl = v3;
+////                            _verts.tl = v3;
+//                        } else if(j == 5) {
+//                            _verts.bl = v1;
+//                            _verts.br = v2;
+//                            _verts.tr = v3;
+////                            _verts.bl = v3;
+//                        } else if(j == 6) {
+//                            _verts.br = v1;
+//                            _verts.bl = v2;
+////                            _verts.tl = v3;
+//                            _verts.tr = v3;
+//                        }
+
+                        [self renderStuff:renderer transform:transform];
                     }
                 }
 			}
@@ -361,88 +362,7 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
 	}
 }
 
-- (void)renderCyclic:(CCRenderer *)renderer transform:(union _GLKMatrix4 const *)transform triangles:(int const *)triangles slot:(spSlot *)slot vertexArray:(CCVertex[])vertexArray j:(int)j v1:(CCVertex *)v1 v2:(CCVertex *)v2 v3:(CCVertex *)v3 v4:(CCVertex *)v4 {
-//    _verts.bl = (*v1);
-//    _verts.tl = (*v2);
-//    _verts.tr = (*v3);
-//    _verts.br = (*v4);
-//
-//    [self renderStuff:renderer transform:transform slot:slot j:j vertexArray:vertexArray triangles:triangles];
-
-//    _verts.bl = (*v4);
-//    _verts.tl = (*v1);
-//    _verts.tr = (*v2);
-//    _verts.br = (*v3);
-//
-//    [self renderStuff:renderer transform:transform slot:slot j:j vertexArray:vertexArray triangles:triangles];
-//
-//    _verts.bl = (*v3);
-//    _verts.tl = (*v4);
-//    _verts.tr = (*v1);
-//    _verts.br = (*v2);
-//
-//    [self renderStuff:renderer transform:transform slot:slot j:j vertexArray:vertexArray triangles:triangles];
-//
-    _verts.bl = (*v2);
-    _verts.tl = (*v3);
-    _verts.tr = (*v4);
-    _verts.br = (*v1);
-
-    [self renderStuff:renderer transform:transform slot:slot j:j vertexArray:vertexArray triangles:triangles];
-}
-
-- (void)renderBL:(CCRenderer *)renderer transform:(union _GLKMatrix4 const *)transform triangles:(int const *)triangles slot:(spSlot *)slot vertexArray:(CCVertex[])vertexArray j:(int)j v1:(CCVertex *)v1 v2:(CCVertex *)v2 v3:(CCVertex *)v3 v4:(CCVertex *)v4 {
-    _verts.bl = (*v4);
-    _verts.tl = (*v1);
-    _verts.tr = (*v2);
-    _verts.br = (*v3);
-
-    [self renderStuff:renderer transform:transform slot:slot j:j vertexArray:vertexArray triangles:triangles];
-}
-
-- (void)renderTR:(CCRenderer *)renderer transform:(union _GLKMatrix4 const *)transform triangles:(int const *)triangles slot:(spSlot *)slot vertexArray:(CCVertex[])vertexArray j:(int)j v1:(CCVertex *)v1 v2:(CCVertex *)v2 v3:(CCVertex *)v3 v4:(CCVertex *)v4 {
-    _verts.tr = (*v4);
-    _verts.br = (*v1);
-    _verts.bl = (*v2);
-    _verts.tl = (*v3);
-
-    [self renderStuff:renderer transform:transform slot:slot j:j vertexArray:vertexArray triangles:triangles];
-}
-
-- (void)renderTL:(CCRenderer *)renderer transform:(union _GLKMatrix4 const *)transform triangles:(int const *)triangles slot:(spSlot *)slot vertexArray:(CCVertex[])vertexArray j:(int)j v1:(CCVertex *)v1 v2:(CCVertex *)v2 v3:(CCVertex *)v3 v4:(CCVertex *)v4 {
-    _verts.tl = (*v4);
-    _verts.tr = (*v1);
-    _verts.br = (*v2);
-    _verts.bl = (*v3);
-
-    [self renderStuff:renderer transform:transform slot:slot j:j vertexArray:vertexArray triangles:triangles];
-}
-
-- (void)renderBR:(CCRenderer *)renderer transform:(union _GLKMatrix4 const *)transform triangles:(int const *)triangles slot:(spSlot *)slot vertexArray:(CCVertex[])vertexArray j:(int)j v1:(CCVertex *)v1 v2:(CCVertex *)v2 v3:(CCVertex *)v3 v4:(CCVertex *)v4 {
-    _verts.br = (*v4);
-    _verts.bl = (*v1);
-    _verts.tl = (*v2);
-    _verts.tr = (*v3);
-
-    [self renderStuff:renderer transform:transform slot:slot j:j vertexArray:vertexArray triangles:triangles];
-}
-
-- (void)renderStuff:(CCRenderer *)renderer transform:(union _GLKMatrix4 const *)transform slot:(spSlot *)slot j:(int)j vertexArray:(CCVertex[])array triangles:(int const *)triangles {
-
-    if(NO && !isDone) {
-                            NSLog(@"Slot->Attachment %s, TriangleNumber: %d", slot->attachment->name, j);
-                            NSLog(@"BL: (%f, %f), BR: (%f, %f), TR: (%f, %f), TL: (%f, %f)", _verts.bl.position.x, _verts.bl.position.y
-                                    , _verts.br.position.x, _verts.br.position.y
-                                    , _verts.tr.position.x, _verts.tr.position.y
-                                    , _verts.tl.position.x, _verts.tl.position.y
-                            );
-                            NSLog(@"V1: (%f, %f), V2: (%f, %f), V3: (%f, %f)",
-                                    array[triangles[j]].position.x, array[triangles[j]].position.y,
-                                    array[triangles[j+1]].position.x, array[triangles[j+1]].position.y,
-                                    array[triangles[j+2]].position.x, array[triangles[j+2]].position.y
-                            );
-                        }
-
+- (void)renderStuff:(CCRenderer *)renderer transform:(union _GLKMatrix4 const *)transform {
     _effectRenderer.contentSize = self.boundingBox.size;
 
     CCEffectPrepareResult prepResult = [self.effect prepareForRenderingWithSprite:self];
@@ -456,138 +376,11 @@ static const int quadTriangles[6] = {0, 1, 2, 2, 3, 0};
         [self updateShaderUniformsFromEffect];
     }
 
-//    [_effectRenderer freeAllRenderTargets];
-//    CCEffectRenderPass *renderPass = [self.effect renderPassAtIndex:0];
-//    renderPass.debugLabel = @"CCEffectRenderer composite pass";
-//    renderPass.shader = [CCEffectRenderer sharedCopyShader];
-//    renderPass.beginBlocks = @[[[CCEffectRenderPassBeginBlockContext alloc] initWithBlock:^(CCEffectRenderPass *pass, CCEffectRenderPassInputs *passInputs){
-//
-//        passInputs.shaderUniforms[CCShaderUniformMainTexture] = passInputs.previousPassTexture;
-//        passInputs.shaderUniforms[CCShaderUniformPreviousPassTexture] = passInputs.previousPassTexture;
-//    }]];
-
-
-//    CCEffectTexCoordFunc tc1 = selectTexCoordFunc(renderPass.texCoord1Mapping, CCEffectTexCoordSource1, fromIntermediate, padMainTexCoords);
-//    CCEffectTexCoordFunc tc2 = selectTexCoordFunc(renderPass.texCoord2Mapping, CCEffectTexCoordSource2, fromIntermediate, padMainTexCoords);
-
-//    CCSpriteVertexes paddedVerts; //= padVertices(sprite.vertexes, effect.padding, tc1, tc2);
-//    paddedVerts = _verts;
-////    if(isnan(paddedVerts.bl.texCoord1.x) || isnan(paddedVerts.bl.texCoord1.y)) {
-////        paddedVerts = (*sprite.vertexes);
-////    }
-//    CCEffectRenderPassInputs *renderPassInputs = [[CCEffectRenderPassInputs alloc] init];
-//    renderPassInputs.renderPassId = 0;
-//    renderPassInputs.previousPassTexture = self.texture;
-//    renderPassInputs.renderer = renderer;
-//    renderPassInputs.sprite = self;
-//    [renderPassInputs setVertsWorkAround:&paddedVerts];
-//
-//    renderPassInputs.texCoord1Center = GLKVector2Make((self.vertexes->tr.texCoord1.s + self.vertexes->bl.texCoord1.s) * 0.5f, (self.vertexes->tr.texCoord1.t + self.vertexes->bl.texCoord1.t) * 0.5f);
-//    renderPassInputs.texCoord1Extents = GLKVector2Make(fabsf(self.vertexes->tr.texCoord1.s - self.vertexes->bl.texCoord1.s) * 0.5f, fabsf(self.vertexes->tr.texCoord1.t - self.vertexes->bl.texCoord1.t) * 0.5f);
-//    renderPassInputs.texCoord2Center = renderPassInputs.texCoord1Center; //= GLKVector2Make((self.vertexes->tr.texCoord2.s + self.vertexes->bl.texCoord2.s) * 0.5f, (self.vertexes->tr.texCoord2.t + self.vertexes->bl.texCoord2.t) * 0.5f);
-//    renderPassInputs.texCoord2Extents = renderPassInputs.texCoord1Extents; //= GLKVector2Make(fabsf(self.vertexes->tr.texCoord2.s - self.vertexes->bl.texCoord2.s) * 0.5f, fabsf(self.vertexes->tr.texCoord2.t - self.vertexes->bl.texCoord2.t) * 0.5f);
-//
-//    renderPassInputs.needsClear = YES;
-//    renderPassInputs.shaderUniforms = _shaderUniforms;
-////    CCEffectRenderTarget *rt = nil;
-//
-//    [renderer pushGroup];
-//    renderPassInputs.transform = *transform;
-//    renderPassInputs.ndcToNodeLocal = GLKMatrix4Invert(*transform, nil);
-//
-//    [renderPass begin:renderPassInputs];
-//    [renderPass update:renderPassInputs];
-
     [_effectRenderer drawSprite:self
                      withEffect:self.effect uniforms:self.shaderUniforms
                        renderer:renderer
                       transform:transform];
 }
-
-- (CCVertex)buildV4:(CCVertex)v1 v2:(CCVertex)v2 v3:(CCVertex)v3 {
-    CCVertex result;
-    CGPoint v1Point = ccp(v1.position.x, v1.position.y);
-    CGPoint v2Point = ccp(v2.position.x, v2.position.y);
-    CGPoint midPoint = ccpMidpoint(v1Point, v2Point);
-    CGPoint v1TPoint = ccp(v1.texCoord1.x, v1.texCoord1.y);
-    CGPoint v2TPoint = ccp(v2.texCoord1.x, v2.texCoord1.y);
-    CGPoint midTPoint = ccpMidpoint(v1TPoint, v2TPoint);
-
-    result.position = GLKVector4Make(v3.position.x
-            + (midPoint.x - v3.position.x) * 2,
-            v3.position.y + (midPoint.y - v3.position.y) * 2, 0.0, 1.0);
-
-    result.color = v1.color;
-    result.texCoord1 = GLKVector2Make(v3.texCoord1.x + (midTPoint.x - v3.texCoord1.x) * 2,
-            v3.texCoord1.y + (midTPoint.y - v3.texCoord1.y) * 2);
-    result.texCoord2 = result.texCoord1;
-    return result;
-}
-
-- (CCVertex)buildMinV4:(CCVertex)v1 v2:(CCVertex)v2 v3:(CCVertex)v3 {
-    CCVertex result;
-    result.position = GLKVector4Make(
-            MIN(v1.position.x,v2.position.x),
-            MIN(v1.position.y,v2.position.y),
-            0.0, 1.0);
-
-    result.color = v1.color;
-    result.texCoord1 = GLKVector2Make(
-            MIN(v1.texCoord1.x,v2.texCoord1.x),
-            MIN(v1.texCoord1.y,v2.texCoord1.y)
-    );
-    result.texCoord2 = result.texCoord1;
-    return result;
-}
-
-- (CCVertex)buildMaxV4:(CCVertex)v1 v2:(CCVertex)v2 v3:(CCVertex)v3 {
-    CCVertex result;
-    result.position = GLKVector4Make(
-            MAX(v1.position.x,v2.position.x),
-            MAX(v1.position.y,v2.position.y),
-            0.0, 1.0);
-
-    result.color = v1.color;
-    result.texCoord1 = GLKVector2Make(
-            MAX(v1.texCoord1.x,v2.texCoord1.x),
-            MAX(v1.texCoord1.y,v2.texCoord1.y)
-    );
-    result.texCoord2 = result.texCoord1;
-    return result;
-}
-
-- (CCVertex)buildMinMaxV4:(CCVertex)v1 v2:(CCVertex)v2 v3:(CCVertex)v3 {
-    CCVertex result;
-    result.position = GLKVector4Make(
-            MIN(v1.position.x,v2.position.x),
-            MAX(v1.position.y,v2.position.y),
-            0.0, 1.0);
-
-    result.color = v1.color;
-    result.texCoord1 = GLKVector2Make(
-            MIN(v1.texCoord1.x,v2.texCoord1.x),
-            MAX(v1.texCoord1.y,v2.texCoord1.y)
-    );
-    result.texCoord2 = result.texCoord1;
-    return result;
-}
-
-- (CCVertex)buildMaxMinV4:(CCVertex)v1 v2:(CCVertex)v2 v3:(CCVertex)v3 {
-    CCVertex result;
-    result.position = GLKVector4Make(
-            MAX(v1.position.x,v2.position.x),
-            MIN(v1.position.y,v2.position.y),
-            0.0, 1.0);
-
-    result.color = v1.color;
-    result.texCoord1 = GLKVector2Make(
-            MAX(v1.texCoord1.x,v2.texCoord1.x),
-            MIN(v1.texCoord1.y,v2.texCoord1.y)
-    );
-    result.texCoord2 = result.texCoord1;
-    return result;
-}
-
 
 - (CCTexture*) getTextureForRegion:(spRegionAttachment*)attachment {
 
